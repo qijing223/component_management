@@ -1,0 +1,5 @@
+lot:
+  jwt:
+    secret-key: lotbackend
+    ttl: 7200000
+    token-name: Authorization
