@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven 生成的 target 目录 ###
+/target/
+
+### Maven 编译的 .class 文件 ###
+**/*.class
+
+### Maven wrapper ###
+.mvn/
+mvnw
+mvnw.cmd
+
+### macOS ###
+.DS_Store
+
+### Windows ###
+Thumbs.db
+
