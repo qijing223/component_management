@@ -33,7 +33,7 @@ public class CheckInApi {
         try {
             return ResponseEntity.ok(checkInService.checkOut(checkInDTO));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResultTO.failure(e.getMessage()));
+            return ResponseEntity.badRequest().body(ResultTO.error(e.getMessage()));
         }
     }
 
@@ -49,7 +49,7 @@ public class CheckInApi {
         try {
             return ResponseEntity.ok(checkInService.checkIn(checkInDTO));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResultTO.failure(e.getMessage()));
+            return ResponseEntity.badRequest().body(ResultTO.error(e.getMessage()));
         }
     }
 
@@ -66,7 +66,7 @@ public class CheckInApi {
         try {
             return ResponseEntity.ok(checkInService.checkStatus(productId, serialNumber));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResultTO.failure(e.getMessage()));
+            return ResponseEntity.badRequest().body(ResultTO.error(e.getMessage()));
         }
     }
 
