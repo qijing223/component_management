@@ -22,11 +22,16 @@ public class ResultTO<T> implements Serializable {
         this.data = data;
     }
 
-    public static <T> ResultTO<T> failure(String msg) {
+    public static <T> ResultTO<T> success(T data) {
+        return new ResultTO<>(200, "Success", data);
+    }
+
+
+    public static <T> ResultTO<T> error(String msg) {
         return new ResultTO<>(400, msg, null);
     }
 
-    public static <T> ResultTO<T> success(T data) {
-        return new ResultTO<>(200, "Success", data);
+    public static <T> ResultTO<T> error(int code, String msg) {
+        return new ResultTO<>(code, msg, null);
     }
 }
