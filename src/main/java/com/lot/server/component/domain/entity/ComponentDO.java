@@ -1,33 +1,32 @@
-package com.lot.server.component.domain.model;
+package com.lot.server.component.domain.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
-/**
- * ComponentDO
- * 对应数据库中的 "component" 表 (示例名称，可自行调整)
- */
-@Entity
-@Table(name = "component")
-@Data
 public class ComponentDO {
+    private Integer productsId;
+    private String productName;
+    private String category;
 
-    /**
-     * 主键ID
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Integer getProductsId() {
+        return productsId;
+    }
 
-    /**
-     * 组件名称
-     */
-    @Column(name = "name", nullable = false)
-    private String name;
+    public void setProductsId(Integer productsId) {
+        this.productsId = productsId;
+    }
 
-    /**
-     * 组件描述
-     */
-    @Column(name = "description")
-    private String description;
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
+

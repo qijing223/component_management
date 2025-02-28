@@ -1,22 +1,32 @@
-package com.lot.server.component.domain.entity;
+package com.lot.server.component.domain.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
-/**
- * ComponentDTO
- * 用于与前端进行数据交互（避免直接暴露数据库实体）
- */
-@Data
-@Schema(description = "Component DTO")
 public class ComponentDTO {
+    private Integer productsId;
+    private String productName;
+    private String category;
 
-    @Schema(description = "ComponentID")
-    private Long id;
+    public Integer getProductsId() {
+        return productsId;
+    }
 
-    @Schema(description = "ComponentName")
-    private String name;
+    public void setProductsId(Integer productsId) {
+        this.productsId = productsId;
+    }
 
-    @Schema(description = "ComponentDesc")
-    private String description;
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
+

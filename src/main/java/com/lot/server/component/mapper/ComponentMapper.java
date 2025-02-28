@@ -1,16 +1,30 @@
-package com.lot.server.component.repository;
+package com.lot.server.component.mapper;
 
-import com.lot.server.component.model.ComponentDO;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.lot.server.component.domain.entity.ComponentDO;
+import org.apache.ibatis.annotations.*;
 
-/**
- * ComponentRepository
- * 负责与数据库进行增删改查等交互 (JPA 会自动生成常用的SQL)
- */
-@Repository
-public interface ComponentRepository extends JpaRepository<ComponentDO, Long> {
+import java.util.List;
 
-    // 如果有自定义查询需求，可以在这里定义方法并使用Spring Data JPA的命名规则或@Query注解
-    // 例如: List<ComponentDO> findByName(String name);
+@Mapper
+public interface ComponentMapper {
+
+    @Select("SELECT * FROM Products WHERE Products_id = #{id}")
+    ComponentDO selectProductById(@Param("id") Integer id);
+
+    @Select("SELECT * FROM Products")
+    List<ComponentDO> selectAllProducts();
+
+    @Insert("INSERT INTO Products (Product_name, Category) " +
+            "VALUES (#{productName}, #{category})")
+    @Options(useGeneratedKeys = true, keyProperty = "productsId", keyColumn = "Products_id")
+    void insertProduct(ComponentDO componentDO);
+
+    @Update("UPDATE Products SET " +
+            "Product_name = #{productName}, " +
+            "Category = #{category} " +
+            "WHERE Products_id = #{productsId}")
+    void updateProduct(ComponentDO componentDO);
+
+    @Delete("DELETE FROM Products WHERE Products_id = #{id}")
+    void deleteProductById(@Param("id") Integer id);
 }
