@@ -29,4 +29,3 @@ public class ComponentDO {
         this.category = category;
     }
 }
-
