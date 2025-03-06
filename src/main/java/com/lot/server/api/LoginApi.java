@@ -24,7 +24,7 @@ public class LoginApi {
 
     @PostMapping("/login")
     @Operation(summary = "User Login")
-    public ResultTO<Void> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResultTO<String> login(@RequestBody UserLoginDTO userLoginDTO) {
         return userLoginService.login(userLoginDTO);
     }
 }

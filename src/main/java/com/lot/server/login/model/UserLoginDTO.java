@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 @Schema(description = "User Login DTO")
 public class UserLoginDTO {
+    @Schema(description = "User Id")
+    private Integer userId;
     @Schema(description = "User Name")
     private String username;
     @Schema(description = "Password")
