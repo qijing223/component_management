@@ -15,7 +15,7 @@ public class EmployeeActivity {
     private Integer activityId;
 
     @Column(name = "product_id", nullable = false)
-    private String productId;
+    private Integer productId;
 
     @Column(name = "employee_id", nullable = false)
     private Integer employeeId;
