@@ -78,14 +78,120 @@ public class ActivityApi {
 
 
     @PostMapping("/borrow")
-    public ResponseEntity<String> borrow(@RequestBody ActivityDTO activityDTO) {
+    public ResponseEntity<String> borrow(@RequestBody Map<String, Object> requestData) {
+        Integer productId = (Integer) requestData.get("productId");
+        Integer userId = (Integer) requestData.get("userId");
+
+        if (productId == null || userId == null) {
+            return ResponseEntity.badRequest().body("Product ID and User ID are required.");
+        }
+
+        // Step 1: Retrieve product details
+        ComponentDTO componentDTO = componentService.getProductById(productId);
+        if (componentDTO == null) {
+            return ResponseEntity.badRequest().body("Product not found.");
+        }
+
+        // Step 2: Check if the product is available for borrowing
+        // TODO: Implement getStatus
+        if (!"Available".equals(componentDTO.getStatus())) {
+            return ResponseEntity.badRequest().body("Product is not available for borrowing.");
+        }
+
+        // Step 3: Retrieve category details using category ID
+        Integer categoryId;
+        try {
+            categoryId = Integer.valueOf(componentDTO.getCategory());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid category ID format.");
+        }
+
+        CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
+        if (categoryDTO == null) {
+            return ResponseEntity.badRequest().body("Category not found.");
+        }
+
+        // Step 4: Decrease category available count
+        if (categoryDTO.getAvailableNumber() > 0) {
+            categoryDTO.setAvailableNumber(categoryDTO.getAvailableNumber() - 1);
+            categoryService.updateCategory(categoryDTO);
+        } else {
+            return ResponseEntity.badRequest().body("No available items in this category.");
+        }
+
+        // Step 5: Update product status to "Borrowed"
+        // TODO: Implement setStatus
+        componentDTO.setStatus("Borrowed");
+        componentService.updateProduct(productId, componentDTO);
+
+        // Step 6: Create an activity record
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setProductId(productId);
+        activityDTO.setEmployeeId(userId);
+        activityDTO.setAction(ActivityAction.BORROW);
+        activityDTO.setOperateTime(LocalDateTime.now());
+
         activityService.borrow(activityDTO);
+
         return ResponseEntity.ok("Borrow operation successful.");
     }
 
+
+
     @PostMapping("/return")
-    public ResponseEntity<String> returnItem(@RequestBody ActivityDTO activityDTO) {
+    public ResponseEntity<String> returnItem(@RequestBody Map<String, Object> requestData) {
+        Integer productId = (Integer) requestData.get("productId");
+        Integer userId = (Integer) requestData.get("userId");
+
+        if (productId == null || userId == null) {
+            return ResponseEntity.badRequest().body("Product ID and User ID are required.");
+        }
+
+        // Step 1: Retrieve product details
+        ComponentDTO componentDTO = componentService.getProductById(productId);
+        if (componentDTO == null) {
+            return ResponseEntity.badRequest().body("Product not found.");
+        }
+
+        // Step 2: Check if the product is actually borrowed
+        // TODO: Implement getStatus
+        if (!"Borrowed".equals(componentDTO.getStatus())) {
+            return ResponseEntity.badRequest().body("Product is not currently borrowed.");
+        }
+
+        // Step 3: Retrieve category details using category ID
+        Integer categoryId;
+        try {
+            categoryId = Integer.valueOf(componentDTO.getCategory());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("Invalid category ID format.");
+        }
+
+        CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
+        if (categoryDTO == null) {
+            return ResponseEntity.badRequest().body("Category not found.");
+        }
+
+        // Step 4: Increase category available count
+        categoryDTO.setAvailableNumber(categoryDTO.getAvailableNumber() + 1);
+        categoryService.updateCategory(categoryDTO);
+
+        // Step 5: Update product status back to "Available"
+        // TODO: Implement setStatus
+        componentDTO.setStatus("Available");
+        componentService.updateProduct(productId, componentDTO);
+
+        // Step 6: Create an activity record
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setProductId(productId);
+        activityDTO.setEmployeeId(userId);
+        activityDTO.setAction(ActivityAction.RETURN);
+        activityDTO.setOperateTime(LocalDateTime.now());
+
         activityService.returnItem(activityDTO);
+
         return ResponseEntity.ok("Return operation successful.");
     }
+
+
 }
