@@ -7,7 +7,6 @@ import com.lot.server.common.utils.JwtUtils;
 import com.lot.server.employee.mapper.EmployeeMapper;
 import com.lot.server.login.model.UserLoginDTO;
 import com.lot.server.login.service.UserLoginService;
-import com.lot.server.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
