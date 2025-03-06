@@ -5,6 +5,7 @@ import com.lot.server.activity.domain.model.ActivityDTO;
 import com.lot.server.activity.service.ActivityService;
 import com.lot.server.category.domain.model.CategoryDTO;
 import com.lot.server.category.service.CategoryService;
+import com.lot.server.component.domain.entity.ComponentStatus;
 import com.lot.server.component.domain.model.ComponentDTO;
 import com.lot.server.component.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,6 @@ public class ActivityApi {
 
         // Step 2: Check if the category exists, otherwise create a new one
         if (categoryName != null) {
-            // TODO: implement getCategoryByName API
             CategoryDTO categoryDTO = categoryService.getCategoryByName(categoryName);
             if (categoryDTO == null) {
                 // Create a new category if it doesn't exist
@@ -64,7 +64,6 @@ public class ActivityApi {
                 categoryDTO.setAvailableNumber(categoryDTO.getAvailableNumber() + 1);
                 categoryService.updateCategory(categoryDTO);
             }
-            // TODO: componentDTO's setCategory method should link category ID not string
             componentDTO.setCategory(categoryDTO.getCategoryId());
         }
 
@@ -100,8 +99,7 @@ public class ActivityApi {
         }
 
         // Step 2: Check if the product is available for borrowing
-        // TODO: Implement getStatus
-        if (!"Available".equals(componentDTO.getStatus())) {
+        if (componentDTO.getStatus() != ComponentStatus.AVAILABLE) {
             return ResponseEntity.badRequest().body("Product is not available for borrowing.");
         }
 
@@ -122,7 +120,7 @@ public class ActivityApi {
 
         // Step 5: Update product status to "Borrowed"
         // TODO: Implement setStatus
-        componentDTO.setStatus("Borrowed");
+        componentDTO.setStatus(ComponentStatus.BORROW_OUT);
         componentService.updateProduct(productId, componentDTO);
 
         // Step 6: Create an activity record
@@ -155,13 +153,11 @@ public class ActivityApi {
         }
 
         // Step 2: Check if the product is actually borrowed
-        // TODO: Implement getStatus
-        if (!"Borrowed".equals(componentDTO.getStatus())) {
+        if (componentDTO.getStatus() != ComponentStatus.BORROW_OUT) {
             return ResponseEntity.badRequest().body("Product is not currently borrowed.");
         }
 
         // Step 3: Retrieve category details using category ID
-        // TODO: componentDTO.getCategory() return integer ID
         Integer categoryId = componentDTO.getCategory();
         if (categoryId != null) {
             CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
@@ -174,8 +170,7 @@ public class ActivityApi {
 
 
         // Step 5: Update product status back to "Available"
-        // TODO: Implement setStatus
-        componentDTO.setStatus("Available");
+        componentDTO.setStatus(ComponentStatus.AVAILABLE);
         componentService.updateProduct(productId, componentDTO);
 
         // Step 6: Create an activity record
