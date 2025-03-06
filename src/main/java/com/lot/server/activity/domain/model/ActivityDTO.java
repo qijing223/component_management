@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ActivityDTO implements Serializable {
 
     @Schema(description = "Product ID")
-    private String productId;
+    private Integer productId;
 
     @Schema(description = "Employee ID")
     private Integer employeeId;
