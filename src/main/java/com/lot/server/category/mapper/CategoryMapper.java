@@ -11,6 +11,9 @@ public interface CategoryMapper {
     @Select("SELECT * FROM category WHERE category_id = #{id}")
     CategoryDO selectCategoryById(@Param("id") Integer id);
 
+    @Select("SELECT * FROM category WHERE category_name = #{name}")
+    CategoryDO selectCategoryByName(@Param("name") String name);
+
     @Select("SELECT * FROM category")
     List<CategoryDO> selectAllCategories();
 

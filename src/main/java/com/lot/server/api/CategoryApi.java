@@ -21,6 +21,12 @@ public class CategoryApi {
         return categoryService.getCategoryById(id);
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
+        CategoryDTO category = categoryService.getCategoryByName(name);
+        return category != null ? ResponseEntity.ok(category) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
     @GetMapping
     public List<CategoryDTO> getAllCategories() {
         return categoryService.getAllCategories();

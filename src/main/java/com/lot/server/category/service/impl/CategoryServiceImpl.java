@@ -23,6 +23,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryDTO getCategoryByName(String name) {
+        CategoryDO categoryDO = categoryMapper.selectCategoryByName(name);
+        return categoryDO != null ? convertToDTO(categoryDO) : null;
+    }
+
+    @Override
     public List<CategoryDTO> getAllCategories() {
         List<CategoryDO> categoryDOList = categoryMapper.selectAllCategories();
         return categoryDOList.stream().map(this::convertToDTO).collect(Collectors.toList());

@@ -65,7 +65,7 @@ public class ActivityApi {
                 categoryService.updateCategory(categoryDTO);
             }
             // TODO: componentDTO's setCategory method should link category ID not string
-            componentDTO.setCategory(categoryDTO.getCategoryId())
+            componentDTO.setCategory(categoryDTO.getCategoryId());
         }
 
         componentService.createProduct(componentDTO); // Assuming this method creates and assigns an ID
