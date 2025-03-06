@@ -5,5 +5,5 @@ import com.lot.server.common.bean.ResultTO;
 import com.lot.server.login.model.UserLoginDTO;
 
 public interface UserLoginService {
-    public ResultTO<Void> login(UserLoginDTO userLoginDTO);
+    public ResultTO<String> login(UserLoginDTO userLoginDTO);
 }
