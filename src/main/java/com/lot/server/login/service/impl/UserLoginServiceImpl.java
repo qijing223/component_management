@@ -25,6 +25,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
         String realPassword = employeeMapper.getPasswordByUsername(username);
+        System.out.println(username + realPassword);
 
         if(password.equals(realPassword)){
             Map<String, Object> claims = new HashMap<>();
