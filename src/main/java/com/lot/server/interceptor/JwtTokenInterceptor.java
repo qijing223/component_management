@@ -24,6 +24,7 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
             // if not controller
+            log.info("not controller, skip jwt");
             return true;
         }
 

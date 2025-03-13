@@ -30,7 +30,7 @@ public class ComponentServiceImpl implements ComponentService {
     @Override
     public ComponentDTO updateProduct(Integer id, ComponentDTO dto) {
         // First fetch the existing record
-        ComponentDO existing = componentMapper.selectProductById(id);
+        ComponentDO existing = componentMapper.getProductById(id);
         if (existing == null) {
             // In real scenario, you might throw an exception
             return null;
@@ -43,7 +43,7 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public ComponentDTO getProductById(Integer id) {
-        ComponentDO product = componentMapper.selectProductById(id);
+        ComponentDO product = componentMapper.getProductById(id);
         if (product == null) {
             return null;
             // or throw an exception if preferred

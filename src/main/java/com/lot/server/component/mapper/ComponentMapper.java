@@ -1,4 +1,5 @@
 package com.lot.server.component.mapper;
+import org.springframework.stereotype.Repository;
 
 import com.lot.server.component.domain.entity.ComponentDO;
 import org.apache.ibatis.annotations.*;
@@ -6,16 +7,17 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
+@Repository
 public interface ComponentMapper {
 
-    @Select("SELECT * FROM Products WHERE Products_id = #{id}")
+    @Select("SELECT * FROM Products WHERE Product_id = #{id}")
     @Results({
             @Result(column = "Products_id", property = "productsId"),
             @Result(column = "Product_name", property = "productName"),
             @Result(column = "Category", property = "category"),
             @Result(column = "status", property = "status", typeHandler = ComponentStatusTypeHandler.class) // 处理 status
     })
-    ComponentDO selectProductById(@Param("id") Integer id);
+    ComponentDO getProductById(@Param("id") Integer id);
 
     @Select("SELECT * FROM Products")
     @Results({
