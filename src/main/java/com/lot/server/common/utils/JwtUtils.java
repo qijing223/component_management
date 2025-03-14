@@ -1,11 +1,10 @@
 package com.lot.server.common.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ public class JwtUtils {
     public static String createJWT(String secretKey, long ttlMillis, Map<String, Object> claims) {
         // signature algorithm
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         // jwt generate/exp time
         long expMillis = System.currentTimeMillis() + ttlMillis;
@@ -21,16 +21,19 @@ public class JwtUtils {
         // jwt body
         JwtBuilder builder = Jwts.builder()
                 .setClaims(claims)
-                .signWith(signatureAlgorithm, secretKey.getBytes(StandardCharsets.UTF_8))
-                .setExpiration(exp);
+                .setExpiration(exp)
+                .signWith(key, signatureAlgorithm);
 
         return builder.compact();
     }
 
     public static Claims parseJWT(String secretKey, String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
-                .parseClaimsJws(token).getBody();
-        return claims;
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Jws<Claims> jws = Jwts.parserBuilder()
+                .setSigningKey(key)  // 设置签名密钥
+                .build()  // 构建解析器
+                .parseClaimsJws(token); // 解析 token
+
+        return jws.getBody(); // 获取 payload
     }
 }

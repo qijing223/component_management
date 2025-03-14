@@ -5,13 +5,11 @@ import com.lot.server.employee.mapper.EmployeeMapper;
 import com.lot.server.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private EmployeeMapper employeeMapper;
@@ -36,8 +34,8 @@ public class EmployeeServiceImpl implements EmployeeService{
             return false;
         }
         EmployeeEntity entity = convertToEntity(employee);
-        String hashedPassword = passwordEncoder.encode(rawpassword);
-        entity.setPassword(hashedPassword);
+//        String hashedPassword = passwordEncoder.encode(rawpassword);
+        entity.setPassword(rawpassword);
 
         return employeeMapper.addEmployee(entity) > 0;
     }

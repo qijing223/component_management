@@ -31,6 +31,6 @@ public interface EmployeeMapper {
     @Delete("DELETE FROM Employees WHERE employees_id=#{id}")
     int deleteEmployee(Integer id);
 
-    @Select("SELECT password FROM Employees WHERE username = #{username}")
+    @Select("SELECT password FROM employees WHERE username = #{username}")
     String getPasswordByUsername(String username);
 }

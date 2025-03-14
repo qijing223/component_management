@@ -30,7 +30,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         if(password.equals(realPassword)){
             Map<String, Object> claims = new HashMap<>();
-            claims.put(JwtClaimsConstant.USER_ID, userLoginDTO.getUserId());
+            claims.put(JwtClaimsConstant.USER_ID, userLoginDTO.getUsername());
             String jwtToken = JwtUtils.createJWT(jwtProperties.getSecretKey(), jwtProperties.getTtl(), claims);
             return ResultTO.success(jwtToken);
         } else {

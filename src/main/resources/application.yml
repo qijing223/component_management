@@ -1,6 +1,6 @@
 lot:
   jwt:
-    secret-key: lotbackend
+    secret-key: LoTBackEndSecurityKeyUsedForAuthorization
     ttl: 7200000
     token-name: Authorization
 spring:
