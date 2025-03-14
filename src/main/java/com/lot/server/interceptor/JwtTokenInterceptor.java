@@ -27,19 +27,19 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
             log.info("not controller, skip jwt");
             return true;
         }
-
         // get token
         String token = request.getHeader(jwtProperties.getTokenName());
 
         // check token
         try {
             Claims claims = JwtUtils.parseJWT(jwtProperties.getSecretKey(), token);
-            Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
-            UserContext.setUserId(userId);
+            String username = claims.get(JwtClaimsConstant.USER_NAME).toString();
+            UserContext.setUserName(username);
             return true;
-        } catch (Exception ex) {
+        } catch (Exception e) {
             // no authorization
-            response.setStatus(402);
+            System.out.println(e.getMessage());
+            response.setStatus(401);
             return false;
         }
     }

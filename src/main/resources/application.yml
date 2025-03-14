@@ -5,7 +5,7 @@ lot:
     token-name: Authorization
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-3-15-34-237.us-east-2.compute.amazonaws.com:5432/mydb
+    url: jdbc:postgresql://172.191.111.81:5432/mydb
     username: myuser
     password: slb123456
     driver-class-name: org.postgresql.Driver
