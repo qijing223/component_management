@@ -30,9 +30,9 @@ public class JwtUtils {
     public static Claims parseJWT(String secretKey, String token) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         Jws<Claims> jws = Jwts.parserBuilder()
-                .setSigningKey(key)  // 设置签名密钥
-                .build()  // 构建解析器
-                .parseClaimsJws(token); // 解析 token
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
 
         return jws.getBody(); // 获取 payload
     }

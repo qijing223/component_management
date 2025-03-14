@@ -14,21 +14,21 @@ public interface EmployeeMapper {
             @Result(column = "department", property = "department"),
             @Result(column = "manager", property = "manager")
     })
-    @Select("SELECT * FROM Employees WHERE employees_id = #{id}")
+    @Select("SELECT * FROM employees WHERE employees_id = #{id}")
     EmployeeEntity getEmployeeById(Integer id);
 
     @ResultMap("EmployeeMap")
-    @Select("SELECT * FROM Employees")
+    @Select("SELECT * FROM employees")
     List<EmployeeEntity> getAllEmployees();
 
-    @Insert("INSERT INTO Employees (username, password, department, manager) VALUES (#{username}, #{password}, #{department}, #{manager})")
+    @Insert("INSERT INTO employees (username, password, department, manager) VALUES (#{username}, #{password}, #{department}, #{manager})")
     @Options(useGeneratedKeys = true, keyProperty = "employees_id")
     int addEmployee(EmployeeEntity employee);
 
-    @Update("UPDATE Employees SET username=#{username}, password=#{password}, department=#{department}, manager=#{manager} WHERE employees_id=#{employees_id}")
+    @Update("UPDATE employees SET username=#{username}, password=#{password}, department=#{department}, manager=#{manager} WHERE employees_id=#{employees_id}")
     int updateEmployee(EmployeeEntity employee);
 
-    @Delete("DELETE FROM Employees WHERE employees_id=#{id}")
+    @Delete("DELETE FROM employees WHERE employees_id=#{id}")
     int deleteEmployee(Integer id);
 
     @Select("SELECT password FROM employees WHERE username = #{username}")

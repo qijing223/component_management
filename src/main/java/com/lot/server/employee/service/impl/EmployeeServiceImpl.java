@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
-//    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Autowired
     private EmployeeMapper employeeMapper;
 
@@ -34,14 +32,14 @@ public class EmployeeServiceImpl implements EmployeeService{
             return false;
         }
         EmployeeEntity entity = convertToEntity(employee);
-//        String hashedPassword = passwordEncoder.encode(rawpassword);
         entity.setPassword(rawpassword);
 
         return employeeMapper.addEmployee(entity) > 0;
     }
 
     @Override
-    public boolean updateEmployee(EmployeeDTO employee) {//still not add function of update password.
+    public boolean updateEmployee(EmployeeDTO employee) {
+        // TODO add update password
         if (employee == null || employee.getEmployees_id() == null) {
             return false;
         }
