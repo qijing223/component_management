@@ -1,6 +1,7 @@
 package com.lot.server.component.service.impl;
 
 import com.lot.server.common.bean.ResultTO;
+import com.lot.server.component.domain.entity.ComponentStatus;
 import com.lot.server.component.domain.model.ComponentDTO;
 import com.lot.server.component.domain.entity.ComponentDO;
 import com.lot.server.component.mapper.ComponentMapper;
@@ -35,8 +36,8 @@ public class ComponentServiceImpl implements ComponentService {
             // In real scenario, you might throw an exception
             return null;
         }
-        existing.setProductName(dto.getProductName());
         existing.setCategory(dto.getCategory());
+        existing.setStatus(dto.getStatus() != null ? dto.getStatus() : existing.getStatus());
         componentMapper.updateProduct(existing);
         return convertToDTO(existing);
     }
@@ -67,8 +68,8 @@ public class ComponentServiceImpl implements ComponentService {
     private ComponentDO convertToDO(ComponentDTO dto) {
         ComponentDO entity = new ComponentDO();
         entity.setProductsId(dto.getProductsId());
-        entity.setProductName(dto.getProductName());
         entity.setCategory(dto.getCategory());
+        entity.setStatus(dto.getStatus() != null ? dto.getStatus() : ComponentStatus.AVAILABLE);
         return entity;
     }
 
@@ -78,8 +79,8 @@ public class ComponentServiceImpl implements ComponentService {
         }
         ComponentDTO dto = new ComponentDTO();
         dto.setProductsId(entity.getProductsId());
-        dto.setProductName(entity.getProductName());
         dto.setCategory(entity.getCategory());
+        dto.setStatus(entity.getStatus());
         return dto;
     }
 }

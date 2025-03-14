@@ -3,7 +3,6 @@ import com.lot.server.component.domain.entity.ComponentStatus;
 
 public class ComponentDO {
     private Integer productsId;
-    private String productName;
     private Integer category;
     private ComponentStatus status;
 
@@ -13,14 +12,6 @@ public class ComponentDO {
 
     public void setProductsId(Integer productsId) {
         this.productsId = productsId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public Integer getCategory() {

@@ -17,8 +17,8 @@ public class EmployeeActivity {
     @Column(name = "product_id", nullable = false)
     private Integer productId;
 
-    @Column(name = "employee_id", nullable = false)
-    private Integer employeeId;
+    @Column(name = "employees_id", nullable = false)
+    private Integer employeesId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "action", nullable = false)

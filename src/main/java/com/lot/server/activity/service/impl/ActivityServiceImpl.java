@@ -45,7 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
     private void insertActivity(ActivityDTO activityDTO, ActivityAction action) {
         EmployeeActivity employeeActivity = new EmployeeActivity();
         employeeActivity.setProductId(activityDTO.getProductId());
-        employeeActivity.setEmployeeId(activityDTO.getEmployeeId());
+        employeeActivity.setEmployeesId(activityDTO.getEmployeesId());
         employeeActivity.setAction(action);
         employeeActivity.setOperateTime(LocalDateTime.now());
 

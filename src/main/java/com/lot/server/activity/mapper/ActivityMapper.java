@@ -29,8 +29,8 @@ public interface ActivityMapper {
      * Inserts a new EmployeeActivity record.
      * @param employeeActivity the EmployeeActivity entity to be inserted
      */
-    @Insert("INSERT INTO employee_activity (product_id, employee_id, action, operate_time) " +
-            "VALUES (#{productId}, #{employeeId}, #{action}, #{operateTime})")
+    @Insert("INSERT INTO employee_activity (product_id, employees_id, action, operate_time) " +
+            "VALUES (#{productId}, #{employeesId}, #{action, typeHandler=com.lot.server.activity.mapper.ActivityActionTypeHandler}, #{operateTime})")
     @Options(useGeneratedKeys = true, keyProperty = "activityId", keyColumn = "activity_id")
     void insert(EmployeeActivity employeeActivity);
 
@@ -38,9 +38,11 @@ public interface ActivityMapper {
      * Updates an existing EmployeeActivity record.
      * @param employeeActivity the EmployeeActivity entity with updated data
      */
-    @Update("UPDATE employee_activity SET product_id = #{productId}, employee_id = #{employeeId}, " +
-            "action = #{action}, operate_time = #{operateTime} WHERE activity_id = #{activityId}")
+    @Update("UPDATE employee_activity SET product_id = #{productId}, employees_id = #{employeesId}, " +
+            "action = #{action, typeHandler=com.lot.server.activity.mapper.ActivityActionTypeHandler}, " +
+            "operate_time = #{operateTime} WHERE activity_id = #{activityId}")
     void update(EmployeeActivity employeeActivity);
+
 
     /**
      * Deletes an EmployeeActivity record by its ID.

@@ -14,7 +14,7 @@ public class ActivityDTO implements Serializable {
     private Integer productId;
 
     @Schema(description = "Employee ID")
-    private Integer employeeId;
+    private Integer employeesId;
 
     @Schema(description = "Action Type (Stock-in, Stock-out, Borrow, Return, Dispose)")
     private ActivityAction action;
