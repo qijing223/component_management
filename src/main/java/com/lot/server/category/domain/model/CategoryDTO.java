@@ -1,50 +1,50 @@
 package com.lot.server.category.domain.model;
 
 public class CategoryDTO {
-    private Integer categoryId;
-    private String categoryName;
-    private Integer availableNumber;
-    private Integer usageNumber;
-    private Integer borrowNumber;
 
-    // Getters and Setters
-    public Integer getCategoryId() {
-        return categoryId;
+    private Integer productId;
+    private String productName;
+    private Integer numberPartCheckOut;
+    private Integer numberPartInStock;
+    private Double totalCost;
+
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Integer getAvailableNumber() {
-        return availableNumber;
+    public Integer getNumberPartCheckOut() {
+        return numberPartCheckOut;
     }
 
-    public void setAvailableNumber(Integer availableNumber) {
-        this.availableNumber = availableNumber;
+    public void setNumberPartCheckOut(Integer numberPartCheckOut) {
+        this.numberPartCheckOut = numberPartCheckOut;
     }
 
-    public Integer getUsageNumber() {
-        return usageNumber;
+    public Integer getNumberPartInStock() {
+        return numberPartInStock;
     }
 
-    public void setUsageNumber(Integer usageNumber) {
-        this.usageNumber = usageNumber;
+    public void setNumberPartInStock(Integer numberPartInStock) {
+        this.numberPartInStock = numberPartInStock;
     }
 
-    public Integer getBorrowNumber() {
-        return borrowNumber;
+    public Double getTotalCost() {
+        return totalCost;
     }
 
-    public void setBorrowNumber(Integer borrowNumber) {
-        this.borrowNumber = borrowNumber;
+    public void setTotalCost(Double totalCost) {
+        this.totalCost = totalCost;
     }
 }

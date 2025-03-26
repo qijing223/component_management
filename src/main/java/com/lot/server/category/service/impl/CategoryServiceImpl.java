@@ -49,23 +49,23 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.deleteCategoryById(id);
     }
 
-    private CategoryDTO convertToDTO(CategoryDO categoryDO) {
+    private CategoryDTO convertToDTO(CategoryDO doObj) {
         CategoryDTO dto = new CategoryDTO();
-        dto.setCategoryId(categoryDO.getCategoryId());
-        dto.setCategoryName(categoryDO.getCategoryName());
-        dto.setAvailableNumber(categoryDO.getAvailableNumber());
-        dto.setUsageNumber(categoryDO.getUsageNumber());
-        dto.setBorrowNumber(categoryDO.getBorrowNumber());
+        dto.setProductId(doObj.getProductId());
+        dto.setProductName(doObj.getProductName());
+        dto.setNumberPartCheckOut(doObj.getNumberPartCheckOut());
+        dto.setNumberPartInStock(doObj.getNumberPartInStock());
+        dto.setTotalCost(doObj.getTotalCost());
         return dto;
     }
 
-    private CategoryDO convertToDO(CategoryDTO categoryDTO) {
-        CategoryDO categoryDO = new CategoryDO();
-        categoryDO.setCategoryId(categoryDTO.getCategoryId());
-        categoryDO.setCategoryName(categoryDTO.getCategoryName());
-        categoryDO.setAvailableNumber(categoryDTO.getAvailableNumber());
-        categoryDO.setUsageNumber(categoryDTO.getUsageNumber());
-        categoryDO.setBorrowNumber(categoryDTO.getBorrowNumber());
-        return categoryDO;
+    private CategoryDO convertToDO(CategoryDTO dto) {
+        CategoryDO doObj = new CategoryDO();
+        doObj.setProductId(dto.getProductId());
+        doObj.setProductName(dto.getProductName());
+        doObj.setNumberPartCheckOut(dto.getNumberPartCheckOut());
+        doObj.setNumberPartInStock(dto.getNumberPartInStock());
+        doObj.setTotalCost(dto.getTotalCost());
+        return doObj;
     }
 }

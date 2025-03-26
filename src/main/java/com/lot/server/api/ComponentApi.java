@@ -16,15 +16,17 @@ public class ComponentApi {
     @Autowired
     private ComponentService componentService;
 
+    // 创建一个新零件组件
     @PostMapping
-    public ResponseEntity<ComponentDTO> createProduct(@RequestBody ComponentDTO dto) {
+    public ResponseEntity<ComponentDTO> createComponent(@RequestBody ComponentDTO dto) {
         ComponentDTO created = componentService.createProduct(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
+    // 更新指定 ID 的组件信息
     @PutMapping("/{id}")
-    public ResponseEntity<ComponentDTO> updateProduct(@PathVariable Integer id,
-                                                      @RequestBody ComponentDTO dto) {
+    public ResponseEntity<ComponentDTO> updateComponent(@PathVariable Integer id,
+                                                        @RequestBody ComponentDTO dto) {
         ComponentDTO updated = componentService.updateProduct(id, dto);
         if (updated == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -32,23 +34,26 @@ public class ComponentApi {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    // 获取指定 ID 的组件
     @GetMapping("/{id}")
-    public ResponseEntity<ComponentDTO> getProductById(@PathVariable Integer id) {
-        ComponentDTO product = componentService.getProductById(id);
-        if (product == null) {
+    public ResponseEntity<ComponentDTO> getComponentById(@PathVariable Integer id) {
+        ComponentDTO component = componentService.getProductById(id);
+        if (component == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(component, HttpStatus.OK);
     }
 
+    // 删除组件
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteComponent(@PathVariable Integer id) {
         componentService.deleteProductById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // 获取所有组件
     @GetMapping
-    public ResponseEntity<List<ComponentDTO>> getAllProducts() {
+    public ResponseEntity<List<ComponentDTO>> getAllComponents() {
         List<ComponentDTO> all = componentService.getAllProducts();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }

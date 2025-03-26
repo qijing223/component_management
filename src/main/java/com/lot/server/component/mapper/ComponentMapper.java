@@ -1,46 +1,38 @@
 package com.lot.server.component.mapper;
-import com.lot.server.component.domain.entity.ComponentStatus;
-import org.springframework.stereotype.Repository;
+
 import com.lot.server.component.domain.entity.ComponentDO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-@Repository
 public interface ComponentMapper {
 
-    @Select("SELECT * FROM products WHERE product_id = #{id}")
-    @Results({
-            @Result(column = "product_id", property = "productsId"),
-            @Result(column = "category_id", property = "category"),
-            @Result(column = "status", property = "status", typeHandler = ComponentStatusTypeHandler.class)
-    })
+    // 插入 Component（使用自增主键）
+    @Insert("INSERT INTO part (status, product_name, product_id, cost, part_name) " +
+            "VALUES (#{status}, #{productName}, #{productId}, #{cost}, #{partName})")
+    @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "part_id")
+    int insertProduct(ComponentDO product);
+
+    // 根据 part_id 查询
+    @Select("SELECT part_id, status, product_name, product_id, cost, part_name FROM part WHERE part_id = #{id}")
     ComponentDO getProductById(@Param("id") Integer id);
 
-    @Select("SELECT * FROM products")
-    @Results({
-            @Result(column = "product_id", property = "productsId"),
-            @Result(column = "category_id", property = "category"),
-            @Result(column = "status", property = "status", typeHandler = ComponentStatusTypeHandler.class)
-    })
+    // 更新 Component
+    @Update("UPDATE part SET " +
+            "status = #{status}, " +
+            "product_name = #{productName}, " +
+            "product_id = #{productId}, " +
+            "cost = #{cost}, " +
+            "part_name = #{partName} " +
+            "WHERE part_id = #{partId}")
+    int updateProduct(ComponentDO product);
+
+    // 删除 Component
+    @Delete("DELETE FROM part WHERE part_id = #{id}")
+    int deleteProductById(@Param("id") Integer id);
+
+    // 查询所有 Component
+    @Select("SELECT part_id, status, product_name, product_id, cost, part_name FROM part")
     List<ComponentDO> selectAllProducts();
-
-    @Insert("INSERT INTO products (product_id, category_id, status) " +
-            "VALUES (#{productsId}, #{category}, LOWER(#{status, typeHandler=com.lot.server.component.mapper.ComponentStatusTypeHandler}))")
-    @Options(useGeneratedKeys = true, keyProperty = "productsId", keyColumn = "product_id")
-    void insertProduct(ComponentDO componentDO);
-
-//    @Update("UPDATE products SET category_id = #{category}, status = #{status} WHERE product_id = #{productsId}")
-//    void updateProduct(ComponentDO componentDO);
-
-    @Update("UPDATE products SET " +
-            "category_id = #{componentDO.category}, " +
-            "status = LOWER(#{componentDO.status, typeHandler=com.lot.server.component.mapper.ComponentStatusTypeHandler}) " +
-            "WHERE product_id = #{componentDO.productsId}")
-    void updateProduct(@Param("componentDO") ComponentDO componentDO);
-
-
-    @Delete("DELETE FROM products WHERE product_id = #{id}")
-    void deleteProductById(@Param("id") Integer id);
 }

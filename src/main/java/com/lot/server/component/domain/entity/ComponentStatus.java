@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ComponentStatus {
     AVAILABLE("available"),
-    BORROW_OUT("borrow-out");
+    BORROW_OUT("borrow-out"),
+    UNAVAILABLE("unavailable");
 
     private final String value;
 
