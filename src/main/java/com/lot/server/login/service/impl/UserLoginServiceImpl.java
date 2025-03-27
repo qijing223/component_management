@@ -23,14 +23,14 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public ResultTO<String> login(UserLoginDTO userLoginDTO) {
-        String username = userLoginDTO.getUsername();
+        String username = userLoginDTO.getEmployeeName();
         String password = userLoginDTO.getPassword();
         String realPassword = employeeMapper.getPasswordByUsername(username);
         System.out.println(username + " " + realPassword);
 
         if(password.equals(realPassword)){
             Map<String, Object> claims = new HashMap<>();
-            claims.put(JwtClaimsConstant.USER_NAME, userLoginDTO.getUsername());
+            claims.put(JwtClaimsConstant.USER_NAME, userLoginDTO.getEmployeeName());
             String jwtToken = JwtUtils.createJWT(jwtProperties.getSecretKey(), jwtProperties.getTtl(), claims);
             return ResultTO.success(jwtToken);
         } else {
