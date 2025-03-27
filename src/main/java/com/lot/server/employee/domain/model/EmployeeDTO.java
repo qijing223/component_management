@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDTO {
-    private Integer employees_id;  // ✅ 按照数据库字段
-    private String username;
+    private Integer employee_id;  // ✅ 按照数据库字段
+    private String employee_name;
     private String department;
-    private String manager;
+    private String user_type;
 }

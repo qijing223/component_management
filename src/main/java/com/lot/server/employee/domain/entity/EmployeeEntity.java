@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 @Data
 public class EmployeeEntity implements Serializable{
-    private Integer employees_id;
-    private String username;
+    private Integer employee_id;
+    private String employee_name;
     private String password;
     private String department;
-    private String manager;
+    private String user_type;
 }

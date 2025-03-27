@@ -27,24 +27,20 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public boolean addEmployee(EmployeeDTO employee,String rawpassword) {
-        if (employee == null || employee.getUsername() == null || rawpassword == null) {
+    public boolean addEmployee(EmployeeEntity employee) {
+        if (employee == null || employee.getEmployee_name() == null || employee.getPassword() == null) {
             return false;
         }
-        EmployeeEntity entity = convertToEntity(employee);
-        entity.setPassword(rawpassword);
-
-        return employeeMapper.addEmployee(entity) > 0;
+        return employeeMapper.addEmployee(employee) > 0;
     }
 
     @Override
-    public boolean updateEmployee(EmployeeDTO employee) {
-        // TODO add update password
-        if (employee == null || employee.getEmployees_id() == null) {
+    public boolean updateEmployee(EmployeeEntity employee) {
+        if (employee == null || employee.getEmployee_id() == null) {
             return false;
         }
-        EmployeeEntity entity = convertToEntity(employee);
-        return employeeMapper.updateEmployee(entity) > 0;
+
+        return employeeMapper.updateEmployee(employee) > 0;
     }
 
     @Override
@@ -53,15 +49,15 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     private EmployeeDTO convertToDTO(EmployeeEntity entity) {
-        return new EmployeeDTO(entity.getEmployees_id(), entity.getUsername(), entity.getDepartment(), entity.getManager());
+        return new EmployeeDTO(entity.getEmployee_id(), entity.getEmployee_name(), entity.getDepartment(), entity.getUser_type());
     }
 
     private EmployeeEntity convertToEntity(EmployeeDTO dto) {
         EmployeeEntity entity = new EmployeeEntity();
-        entity.setEmployees_id(dto.getEmployees_id());
-        entity.setUsername(dto.getUsername());
+        entity.setEmployee_id(dto.getEmployee_id());
+        entity.setEmployee_name(dto.getEmployee_name());
         entity.setDepartment(dto.getDepartment());
-        entity.setManager(dto.getManager());
+        entity.setUser_type(dto.getUser_type());
         return entity;
     }
 }

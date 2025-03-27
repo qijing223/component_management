@@ -1,6 +1,7 @@
 package com.lot.server.api;
 
 import com.lot.server.employee.domain.model.EmployeeDTO;
+import com.lot.server.employee.domain.entity.EmployeeEntity;
 import com.lot.server.employee.service.EmployeeService;
 import com.lot.server.common.bean.ResultTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,15 @@ public class EmployeeApi {
 
 
     @PostMapping("/")
-    public ResultTO<String> addEmployee(@RequestBody EmployeeDTO employee, @RequestParam String password) {
-        boolean isAdded = employeeService.addEmployee(employee, password);
+    public ResultTO<String> addEmployee(@RequestBody EmployeeEntity employee) {
+        boolean isAdded = employeeService.addEmployee(employee);
         return isAdded
                 ? ResultTO.success("Employee added successfully")
                 : ResultTO.error("Failed to add employee");
     }
 
-
     @PutMapping("/")
-    public ResultTO<String> updateEmployee(@RequestBody EmployeeDTO employee) {
+    public ResultTO<String> updateEmployee(@RequestBody EmployeeEntity employee) {
         boolean isUpdated = employeeService.updateEmployee(employee);
         return isUpdated
                 ? ResultTO.success("Employee updated successfully")
