@@ -93,7 +93,7 @@ public class ComponentServiceImpl implements ComponentService {
         }
         ComponentDTO dto = new ComponentDTO();
         dto.setPartId(entity.getPartId());
-        dto.setStatus(entity.getStatus() != null ? ComponentStatus.valueOf(entity.getStatus()) : null);
+        dto.setStatus(entity.getStatus() != null ? ComponentStatus.fromValue(entity.getStatus()) : null);
         dto.setProductName(entity.getProductName());
         dto.setProductId(entity.getProductId());
         dto.setCost(entity.getCost());
