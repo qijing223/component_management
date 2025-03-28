@@ -18,6 +18,9 @@ public interface ComponentMapper {
     @Select("SELECT part_id, status, product_name, product_id, cost, part_name FROM part WHERE part_id = #{id}")
     ComponentDO getProductById(@Param("id") Integer id);
 
+    @Select("SELECT * FROM part WHERE status = #{status}")
+    List<ComponentDO> selectByStatus(@Param("status") String status);
+
     // 更新 Component
     @Update("UPDATE part SET " +
             "status = #{status}, " +

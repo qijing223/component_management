@@ -9,6 +9,7 @@ public interface ComponentService {
     ComponentDTO createProduct(ComponentDTO dto);
     ComponentDTO updateProduct(Integer id, ComponentDTO dto);
     ComponentDTO getProductById(Integer id);
+    List<ComponentDTO> getProductsByStatus(String status);
     void deleteProductById(Integer id);
     List<ComponentDTO> getAllProducts();
 }

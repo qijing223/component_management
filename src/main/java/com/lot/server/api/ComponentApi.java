@@ -46,7 +46,17 @@ public class ComponentApi {
         return new ResponseEntity<>(component, HttpStatus.OK);
     }
 
-    // 删除组件
+    // get by status
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<ComponentDTO>> getComponentsByStatus(@PathVariable String status) {
+        List<ComponentDTO> components = componentService.getProductsByStatus(status);
+        if (components.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(components, HttpStatus.OK);
+    }
+
+    // delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComponent(@PathVariable Integer id) {
         componentService.deleteProductById(id);
