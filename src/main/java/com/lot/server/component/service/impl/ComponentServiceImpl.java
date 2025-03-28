@@ -63,6 +63,13 @@ public class ComponentServiceImpl implements ComponentService {
         return convertToDTO(product);
     }
 
+    public List<ComponentDTO> getProductsByStatus(String status) {
+        List<ComponentDO> list = componentMapper.selectByStatus(status);
+        return list.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void deleteProductById(Integer id) {
         componentMapper.deleteProductById(id);
