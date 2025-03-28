@@ -9,9 +9,9 @@ import java.util.List;
 public interface ComponentMapper {
 
     // 插入 Component（使用自增主键）
-    @Insert("INSERT INTO part (status, product_name, product_id, cost, part_name) " +
-            "VALUES (#{status}, #{productName}, #{productId}, #{cost}, #{partName})")
-    @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "part_id")
+    @Insert("INSERT INTO part (part_id, status, product_name, product_id, cost, part_name) " +
+            "VALUES (#{partId}, #{status}, #{productName}, #{productId}, #{cost}, #{partName})")
+    //@Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "part_id")
     int insertProduct(ComponentDO product);
 
     // 根据 part_id 查询

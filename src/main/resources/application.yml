@@ -9,6 +9,7 @@ spring:
     username: myuser
     password: slb123456
     driver-class-name: org.postgresql.Driver
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

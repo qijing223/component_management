@@ -35,7 +35,7 @@ public class ComponentServiceImpl implements ComponentService {
 
         // 更新字段
         if (dto.getStatus() != null) {
-            existing.setStatus(dto.getStatus().name()); // ComponentStatus 枚举转字符串
+            existing.setStatus(dto.getStatus().getValue()); // ComponentStatus 枚举转字符串
         }
         if (dto.getProductName() != null) {
             existing.setProductName(dto.getProductName());
@@ -79,7 +79,7 @@ public class ComponentServiceImpl implements ComponentService {
     private ComponentDO convertToDO(ComponentDTO dto) {
         ComponentDO entity = new ComponentDO();
         entity.setPartId(dto.getPartId());
-        entity.setStatus(dto.getStatus() != null ? dto.getStatus().name() : null);
+        entity.setStatus(dto.getStatus() != null ? dto.getStatus().getValue() : null);  // ✅ 使用小写字符串
         entity.setProductName(dto.getProductName());
         entity.setProductId(dto.getProductId());
         entity.setCost(dto.getCost());

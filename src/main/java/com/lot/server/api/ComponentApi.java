@@ -19,6 +19,7 @@ public class ComponentApi {
     // 创建一个新零件组件
     @PostMapping
     public ResponseEntity<ComponentDTO> createComponent(@RequestBody ComponentDTO dto) {
+        System.out.println("Received DTO: " + dto);
         ComponentDTO created = componentService.createProduct(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -27,6 +28,7 @@ public class ComponentApi {
     @PutMapping("/{id}")
     public ResponseEntity<ComponentDTO> updateComponent(@PathVariable Integer id,
                                                         @RequestBody ComponentDTO dto) {
+        System.out.println("Received DTO: " + dto);
         ComponentDTO updated = componentService.updateProduct(id, dto);
         if (updated == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

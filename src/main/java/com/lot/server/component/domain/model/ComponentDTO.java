@@ -10,6 +10,18 @@ public class ComponentDTO {
     private Double cost;
     private String partName;
 
+    @Override
+    public String toString() {
+        return "ComponentDTO{" +
+                "partId=" + partId +
+                ", status=" + status +
+                ", productName='" + productName + '\'' +
+                ", productId=" + productId +
+                ", cost=" + cost +
+                ", partName='" + partName + '\'' +
+                '}';
+    }
+
     public Integer getPartId() {
         return partId;
     }

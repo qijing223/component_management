@@ -29,4 +29,9 @@ public enum ComponentStatus {
         }
         throw new IllegalArgumentException("Unknown status: " + value);
     }
+
+    public String getValue() {
+        return this.value;
+    }
+
 }
