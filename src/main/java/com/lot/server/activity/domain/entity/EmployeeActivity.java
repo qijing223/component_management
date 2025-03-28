@@ -17,8 +17,8 @@ public class EmployeeActivity {
     @Column(name = "product_id", nullable = false)
     private Integer productId;
 
-    @Column(name = "employees_id", nullable = false)
-    private Integer employeesId;
+    @Column(name = "employee_id", nullable = false)
+    private Integer employeeId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "action", nullable = false)
@@ -26,4 +26,7 @@ public class EmployeeActivity {
 
     @Column(name = "operate_time", nullable = false)
     private LocalDateTime operateTime;
+
+    @Column(name = "part_id", nullable = false)
+    private Integer partId;
 }
