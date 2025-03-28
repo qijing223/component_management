@@ -17,6 +17,12 @@ public interface ActivityService {
     void stockIn(ActivityDTO activityDTO);
 
     /**
+     * Handles stock-out operation.
+     * @param activityDTO the DTO containing stock-out details
+     */
+    void stockOut(ActivityDTO activityDTO);
+
+    /**
      * Handles borrow operation.
      * @param activityDTO the DTO containing borrow details
      */
@@ -27,4 +33,10 @@ public interface ActivityService {
      * @param activityDTO the DTO containing return details
      */
     void returnItem(ActivityDTO activityDTO);
+
+    /**
+     * Retrieves all activity records.
+     * @return list of all activity records
+     */
+    List<ActivityDTO> getAllActivities();
 }

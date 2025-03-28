@@ -16,6 +16,9 @@ public interface ActivityMapper {
      * @return the corresponding EmployeeActivity entity
      */
     @Select("SELECT * FROM employee_activity WHERE activity_id = #{activityId}")
+    @Results({
+        @Result(property = "action", column = "action", typeHandler = ActivityActionTypeHandler.class)
+    })
     EmployeeActivity selectById(@Param("activityId") Integer activityId);
 
     /**
@@ -23,6 +26,9 @@ public interface ActivityMapper {
      * @return list of all EmployeeActivity entities
      */
     @Select("SELECT * FROM employee_activity")
+    @Results({
+        @Result(property = "action", column = "action", typeHandler = ActivityActionTypeHandler.class)
+    })
     List<EmployeeActivity> selectAll();
 
     /**
@@ -42,8 +48,6 @@ public interface ActivityMapper {
             "part_id = #{partId}, action = #{action, typeHandler=com.lot.server.activity.mapper.ActivityActionTypeHandler}, " +
             "operate_time = #{operateTime} WHERE activity_id = #{activityId}")
     void update(EmployeeActivity employeeActivity);
-
-
 
     /**
      * Deletes an EmployeeActivity record by its ID.

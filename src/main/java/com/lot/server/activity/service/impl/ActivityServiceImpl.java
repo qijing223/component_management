@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of ActivityService for managing employee activities.
@@ -28,6 +29,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public void stockOut(ActivityDTO activityDTO) {
+        insertActivity(activityDTO, ActivityAction.STOCK_OUT);
+    }
+
+    @Override
     public void borrow(ActivityDTO activityDTO) {
         insertActivity(activityDTO, ActivityAction.BORROW);
     }
@@ -37,10 +43,18 @@ public class ActivityServiceImpl implements ActivityService {
         insertActivity(activityDTO, ActivityAction.RETURN);
     }
 
+    @Override
+    public List<ActivityDTO> getAllActivities() {
+        List<EmployeeActivity> activities = employeeActivityMapper.selectAll();
+        return activities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Inserts a new employee activity record into the database.
      * @param activityDTO the DTO containing activity details
-     * @param action the action type (STOCK_IN, BORROW, RETURN)
+     * @param action the action type (STOCK_IN, STOCK_OUT, BORROW, RETURN)
      */
     private void insertActivity(ActivityDTO activityDTO, ActivityAction action) {
         EmployeeActivity employeeActivity = new EmployeeActivity();
@@ -51,5 +65,20 @@ public class ActivityServiceImpl implements ActivityService {
         employeeActivity.setOperateTime(LocalDateTime.now());
 
         employeeActivityMapper.insert(employeeActivity);
+    }
+
+    /**
+     * Converts EmployeeActivity entity to ActivityDTO
+     * @param activity the EmployeeActivity entity
+     * @return the converted ActivityDTO
+     */
+    private ActivityDTO convertToDTO(EmployeeActivity activity) {
+        ActivityDTO dto = new ActivityDTO();
+        dto.setProductId(activity.getProductId());
+        dto.setEmployeeId(activity.getEmployeeId());
+        dto.setPartId(activity.getPartId());
+        dto.setAction(activity.getAction());
+        dto.setOperateTime(activity.getOperateTime());
+        return dto;
     }
 }

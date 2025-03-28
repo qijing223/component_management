@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -189,5 +190,56 @@ public class ActivityApi {
         return ResponseEntity.ok("Return operation successful.");
     }
 
+    @PostMapping("/stock-out")
+    public ResponseEntity<String> stockOut(@RequestBody Map<String, Object> requestData) {
+        Integer partId = (Integer) requestData.get("part_id");
+        Integer productId = (Integer) requestData.get("product_id");
+        Integer employeeId = (Integer) requestData.get("employee_id");
+
+        if (partId == null || employeeId == null || productId == null) {
+            return ResponseEntity.badRequest().body("part_id, product_id, and employee_id are required.");
+        }
+
+        // Step 1: Retrieve product details
+        ComponentDTO componentDTO = componentService.getProductById(partId);
+        if (componentDTO == null) {
+            return ResponseEntity.badRequest().body("Product not found.");
+        }
+
+        // Step 2: Check if the product is available for stock-out
+        if (componentDTO.getStatus() != ComponentStatus.AVAILABLE) {
+            return ResponseEntity.badRequest().body("Product is not available for stock-out.");
+        }
+
+        // Step 3: Retrieve category details using category ID
+        CategoryDTO categoryDTO = categoryService.getCategoryById(productId);
+        if (categoryDTO != null) {
+            categoryDTO.setNumberPartInStock(categoryDTO.getNumberPartInStock() - 1);
+            categoryDTO.setTotalCost(categoryDTO.getTotalCost() - componentDTO.getCost());
+            categoryService.updateCategory(categoryDTO);
+        }
+
+        // Step 4: Update product status to "Unavailable"
+        componentDTO.setStatus(ComponentStatus.UNAVAILABLE);
+        componentService.updateProduct(partId, componentDTO);
+
+        // Step 5: Create an activity record
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setPartId(partId);
+        activityDTO.setProductId(productId);
+        activityDTO.setEmployeeId(employeeId);
+        activityDTO.setAction(ActivityAction.STOCK_OUT);
+        activityDTO.setOperateTime(LocalDateTime.now());
+
+        activityService.stockOut(activityDTO);
+
+        return ResponseEntity.ok("Stock-out operation successful.");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
+        List<ActivityDTO> activities = activityService.getAllActivities();
+        return ResponseEntity.ok(activities);
+    }
 
 }
