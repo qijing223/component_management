@@ -61,12 +61,12 @@ jobs:
       - name: Validate DB schema (employee table)
         run: |
           echo "Checking if table 'employee' exists..."
-          TABLE_COUNT=$(psql -h localhost -U testuser -d testdb -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='employee';")
+          TABLE_COUNT=$(psql -h localhost -U testuser -d testdb -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='Employee';")
           if [ $(echo $TABLE_COUNT | tr -d ' ') -eq 0 ]; then
-            echo "Table 'employee' does NOT exist. Migration failed."
+            echo "Table 'Employee' does NOT exist. Migration failed."
             exit 1
           else
-            echo "Table 'employee' exists. Migration successful."
+            echo "Table 'Employee' exists. Migration successful."
           fi
         env:
           PGPASSWORD: testpass
