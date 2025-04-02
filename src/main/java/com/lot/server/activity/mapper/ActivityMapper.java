@@ -31,6 +31,12 @@ public interface ActivityMapper {
     })
     List<EmployeeActivity> selectAll();
 
+    @Select("SELECT * FROM employee_activity WHERE employee_id = #{employeeId}")
+    @Results({
+            @Result(property = "action", column = "action", typeHandler = ActivityActionTypeHandler.class)
+    })
+    List<EmployeeActivity> selectByEmployeeId(Integer employeeId);
+
     /**
      * Inserts a new EmployeeActivity record.
      * @param employeeActivity the EmployeeActivity entity to be inserted

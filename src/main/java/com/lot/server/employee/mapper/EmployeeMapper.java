@@ -33,5 +33,11 @@ public interface EmployeeMapper {
     int deleteEmployee(Integer id);
 
     @Select("SELECT password FROM employee WHERE employee_name = #{employeeName}")
-    String getPasswordByUsername(String employeeName);
+    String getPasswordByEmployeeName(String employeeName);
+
+    @Select("SELECT employee_id FROM employee WHERE employee_name = #{employeeName}")
+    Integer getEmployeeIdByUsername(String username);
+
+    @Select("SELECT user_type FROM employee WHERE employee_id = #{id}")
+    String getEmployeeTypeById(Integer id);
 }

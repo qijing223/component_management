@@ -5,6 +5,8 @@ import com.lot.server.activity.domain.model.ActivityDTO;
 import com.lot.server.activity.service.ActivityService;
 import com.lot.server.category.domain.model.CategoryDTO;
 import com.lot.server.category.service.CategoryService;
+import com.lot.server.common.bean.ResultTO;
+import com.lot.server.common.context.UserContext;
 import com.lot.server.component.domain.entity.ComponentStatus;
 import com.lot.server.component.domain.model.ComponentDTO;
 import com.lot.server.component.service.ComponentService;
@@ -237,9 +239,12 @@ public class ActivityApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<ActivityDTO>> getAllActivities() {
-        List<ActivityDTO> activities = activityService.getAllActivities();
-        return ResponseEntity.ok(activities);
+    public ResultTO<List<ActivityDTO>> getActivities() {
+        Integer userId = UserContext.getUserId();
+        System.out.println("Get Activities from UserId: " + userId);
+        List<ActivityDTO> activities = activityService.getActivities(userId);
+
+        return ResultTO.success(activities);
     }
 
 }
