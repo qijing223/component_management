@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Data
 @Schema(description = "User Login DTO")
 public class UserLoginDTO {
-//    @Schema(description = "User Id")
-//    private Integer userId;
+//    @Schema(description = "Employee Id")
+//    private Integer employeeId;
     @Schema(description = "Employee Name")
     @JsonProperty("employee_name")
     private String employeeName;

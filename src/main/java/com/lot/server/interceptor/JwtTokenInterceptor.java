@@ -33,8 +33,8 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         // check token
         try {
             Claims claims = JwtUtils.parseJWT(jwtProperties.getSecretKey(), token);
-            String username = claims.get(JwtClaimsConstant.USER_NAME).toString();
-            UserContext.setUserName(username);
+            Integer userId = (int) claims.get(JwtClaimsConstant.USER_ID);
+            UserContext.setUserId(userId);
             return true;
         } catch (Exception e) {
             // no authorization

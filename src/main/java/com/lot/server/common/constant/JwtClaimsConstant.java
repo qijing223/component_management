@@ -1,5 +1,5 @@
 package com.lot.server.common.constant;
 
 public class JwtClaimsConstant {
-    public static final String USER_NAME = "userName";
+    public static final String USER_ID = "userId";
 }
