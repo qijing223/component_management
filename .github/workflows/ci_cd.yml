@@ -58,6 +58,11 @@ jobs:
         run: |
           echo "Deploying..." 
 
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
       - name: Upload JAR to server
         if: github.ref == 'refs/heads/main' && success()
         run: |
