@@ -1,9 +1,11 @@
 package com.lot.server.component.service.impl;
 
 import com.lot.server.common.bean.ResultTO;
+import com.lot.server.common.context.UserContext;
 import com.lot.server.component.domain.entity.ComponentStatus;
 import com.lot.server.component.domain.model.ComponentDTO;
 import com.lot.server.component.domain.entity.ComponentDO;
+import com.lot.server.component.domain.model.ReturnedDTO;
 import com.lot.server.component.mapper.ComponentMapper;
 import com.lot.server.component.service.ComponentService;
 import org.springframework.stereotype.Service;
@@ -83,14 +85,30 @@ public class ComponentServiceImpl implements ComponentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ComponentDTO> getBorrowedById(Integer userId) {
+        return componentMapper.selectBorrowedById(userId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReturnedDTO> getReturnedById(Integer userId) {
+        return componentMapper.selectReturnedById(userId)
+                .stream()
+                .collect(Collectors.toList());
+    }
+
     private ComponentDO convertToDO(ComponentDTO dto) {
         ComponentDO entity = new ComponentDO();
         entity.setPartId(dto.getPartId());
-        entity.setStatus(dto.getStatus() != null ? dto.getStatus().getValue() : null);  // ✅ 使用小写字符串
+        entity.setStatus(dto.getStatus() != null ? dto.getStatus().getValue() : null);
         entity.setProductName(dto.getProductName());
         entity.setProductId(dto.getProductId());
         entity.setCost(dto.getCost());
         entity.setPartName(dto.getPartName());
+        entity.setBorrowedEmployeeId(UserContext.getUserId());
         return entity;
     }
 

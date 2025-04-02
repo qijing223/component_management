@@ -1,6 +1,10 @@
 package com.lot.server.api;
 
+import com.lot.server.activity.domain.model.ActivityDTO;
+import com.lot.server.common.bean.ResultTO;
+import com.lot.server.common.context.UserContext;
 import com.lot.server.component.domain.model.ComponentDTO;
+import com.lot.server.component.domain.model.ReturnedDTO;
 import com.lot.server.component.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,5 +72,19 @@ public class ComponentApi {
     public ResponseEntity<List<ComponentDTO>> getAllComponents() {
         List<ComponentDTO> all = componentService.getAllProducts();
         return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+
+    @GetMapping("/borrowed")
+    public ResultTO<List<ComponentDTO>> getBorrowedComponents(){
+        Integer userId = UserContext.getUserId();
+        List<ComponentDTO> borrowedComponent = componentService.getBorrowedById(userId);
+        return ResultTO.success(borrowedComponent);
+    }
+
+    @GetMapping("/returned")
+    public ResultTO<List<ReturnedDTO>> getReturnedComponents(){
+        Integer userId = UserContext.getUserId();
+        List<ReturnedDTO> returnedDTO = componentService.getReturnedById(userId);
+        return ResultTO.success(returnedDTO);
     }
 }

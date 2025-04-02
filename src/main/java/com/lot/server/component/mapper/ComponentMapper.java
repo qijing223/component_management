@@ -1,6 +1,7 @@
 package com.lot.server.component.mapper;
 
 import com.lot.server.component.domain.entity.ComponentDO;
+import com.lot.server.component.domain.model.ReturnedDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -11,7 +12,6 @@ public interface ComponentMapper {
     // 插入 Component（使用自增主键）
     @Insert("INSERT INTO part (part_id, status, product_name, product_id, cost, part_name) " +
             "VALUES (#{partId}, #{status}, #{productName}, #{productId}, #{cost}, #{partName})")
-    //@Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "part_id")
     int insertProduct(ComponentDO product);
 
     // 根据 part_id 查询
@@ -38,4 +38,10 @@ public interface ComponentMapper {
     // 查询所有 Component
     @Select("SELECT part_id, status, product_name, product_id, cost, part_name FROM part")
     List<ComponentDO> selectAllProducts();
+
+    @Select("SELECT part_id, status, product_name, product_id, cost, part_name FROM part WHERE borrowed_employee_id = #{userId} AND status = 'borrow-out'")
+    List<ComponentDO> selectBorrowedById(@Param("userId") Integer userId);
+
+    @Select("SELECT part_id, part_name, return_time, borrow_employee_id FROM returned_part WHERE borrow_employee_id = #{userId}")
+    List<ReturnedDTO> selectReturnedById(@Param("userId") Integer userId);
 }

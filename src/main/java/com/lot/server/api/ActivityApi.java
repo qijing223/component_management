@@ -95,7 +95,8 @@ public class ActivityApi {
     @PostMapping("/borrow")
     public ResponseEntity<String> borrow(@RequestBody Map<String, Object> requestData) {
         Integer partId = (Integer) requestData.get("part_id");
-        Integer employeeId = (Integer) requestData.get("employee_id");
+//        Integer employeeId = (Integer) requestData.get("employee_id");
+        Integer employeeId = UserContext.getUserId();
 
         if (partId == null || employeeId == null) {
             return ResponseEntity.badRequest().body("part_id and employee_id are required.");
@@ -145,7 +146,8 @@ public class ActivityApi {
     @PostMapping("/return")
     public ResponseEntity<String> returnItem(@RequestBody Map<String, Object> requestData) {
         Integer partId = (Integer) requestData.get("part_id");
-        Integer employeeId = (Integer) requestData.get("employee_id");
+//        Integer employeeId = (Integer) requestData.get("employee_id");
+        Integer employeeId = UserContext.getUserId();
 
         if (partId == null || employeeId == null) {
             return ResponseEntity.badRequest().body("Product ID and User ID are required.");
