@@ -19,7 +19,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:14.17
         env:
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: testpass
@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'  # ⚠️ 修改为你实际使用的 Java 版本
+          java-version: '17'
 
       - name: Cache Maven packages
         uses: actions/cache@v3
