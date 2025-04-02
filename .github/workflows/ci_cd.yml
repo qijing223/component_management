@@ -58,6 +58,20 @@ jobs:
                  -user=testuser \
                  -password=testpass migrate
 
+      - name: Validate DB schema
+        run: |
+          echo "Checking if table 'users' exists..."
+          TABLE_COUNT=$(psql -h localhost -U testuser -d testdb -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='users';")
+          if [ $(echo $TABLE_COUNT | tr -d ' ') -eq 0 ]; then
+            echo "Table 'users' does NOT exist. Migration failed."
+            exit 1
+          else
+            echo "Table 'users' exists. Migration successful."
+          fi
+        env:
+          PGPASSWORD: testpass
+
+
       - name: Build and run tests
         run: mvn clean verify
 
