@@ -72,9 +72,20 @@ jobs:
 
       - name: SSH and restart app
         if: github.ref == 'refs/heads/main' && success()
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no azureuser@172.191.111.81 << 'EOF'
+          ssh -i private_key.pem -o StrictHostKeyChecking=no azureuser@172.191.111.81 << EOF
+            echo "Killing old app process (if running)..."
             pkill -f 'java -jar /home/azureuser/app.jar' || true
+
+            echo "Starting new app with injected env vars..."
+            SPRING_DATASOURCE_URL="${SPRING_DATASOURCE_URL}" \
+            SPRING_DATASOURCE_USERNAME="${SPRING_DATASOURCE_USERNAME}" \
+            SPRING_DATASOURCE_PASSWORD="${SPRING_DATASOURCE_PASSWORD}" \
             nohup java -jar /home/azureuser/app.jar > app.log 2>&1 &
-            echo "App deployed and started."
+
+            echo "App deployed and started with environment variables."
           EOF
