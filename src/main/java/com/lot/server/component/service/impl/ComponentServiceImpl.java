@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,6 +100,24 @@ public class ComponentServiceImpl implements ComponentService {
                 .stream()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void updateBorrowedByPartId(Integer userId, Integer partId){
+        componentMapper.updateBorrowedByPartId(userId, partId);
+    }
+
+    @Override
+    public void createReturnedByPartId(Integer userId, Integer partId) {
+        componentMapper.deleteBorrowedByPartId(partId);
+        ComponentDTO componentDTO = this.getProductById(partId);
+        ReturnedDTO returnedDTO = new ReturnedDTO();
+        returnedDTO.setPartId(partId);
+        returnedDTO.setPartName(componentDTO.getPartName());
+        returnedDTO.setReturnTime(LocalDateTime.now());
+        returnedDTO.setBorrowEmployeeId(userId);
+        componentMapper.insertReturned(returnedDTO);
+    }
+
 
     @Override
     public List<ComponentDTO> getComponentsByProductId(Integer productId) {

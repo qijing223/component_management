@@ -127,6 +127,7 @@ public class ActivityApi {
         // Step 5: Update product status to "Borrowed"
         componentDTO.setStatus(ComponentStatus.BORROW_OUT);
         componentService.updateProduct(partId, componentDTO);
+        componentService.updateBorrowedByPartId(employeeId, partId);
 
         // Step 6: Create an activity record
         ActivityDTO activityDTO = new ActivityDTO();
@@ -180,6 +181,7 @@ public class ActivityApi {
         // Step 5: Update product status back to "Available"
         componentDTO.setStatus(ComponentStatus.AVAILABLE);
         componentService.updateProduct(partId, componentDTO);
+        componentService.createReturnedByPartId(employeeId, partId);
 
         // Step 6: Create an activity record
         ActivityDTO activityDTO = new ActivityDTO();
