@@ -39,7 +39,7 @@ public class ActivityApi {
         System.out.println("Received request data: " + requestData);
         Integer partId = (Integer) requestData.get("part_id");
         Integer productId = (Integer) requestData.get("product_id");
-        Integer employeeId = (Integer) requestData.get("employee_id");
+        Integer employeeId = UserContext.getUserId();
         String partName = (String) requestData.get("part_name");
         Object costObj = requestData.get("cost");
         Double cost = null;
@@ -105,12 +105,16 @@ public class ActivityApi {
         // Step 1: Retrieve product details
         ComponentDTO componentDTO = componentService.getProductById(partId);
         if (componentDTO == null) {
-            return ResponseEntity.badRequest().body("Product not found.");
+            return ResponseEntity.badRequest().body("Part not found.");
         }
+
+        System.out.println("Current part status: " + componentDTO.getStatus());
+        System.out.println("Expected status: " + ComponentStatus.AVAILABLE);
+        System.out.println("Status comparison: " + (componentDTO.getStatus() == ComponentStatus.AVAILABLE));
 
         // Step 2: Check if the product is available for borrowing
         if (componentDTO.getStatus() != ComponentStatus.AVAILABLE) {
-            return ResponseEntity.badRequest().body("Product is not available for borrowing.");
+            return ResponseEntity.badRequest().body("Part is not available for borrowing. Current status: " + componentDTO.getStatus());
         }
 
         // Step 3: Retrieve category details using category ID
@@ -126,7 +130,14 @@ public class ActivityApi {
 
         // Step 5: Update product status to "Borrowed"
         componentDTO.setStatus(ComponentStatus.BORROW_OUT);
+        componentDTO.setBorrowedEmployeeId(employeeId);
         componentService.updateProduct(partId, componentDTO);
+
+
+        // componentDTO = componentService.getProductById(partId);
+        // System.out.println("Updated part status: " + componentDTO.getStatus());
+        // System.out.println("Expected status: " + ComponentStatus.BORROW_OUT);
+        // System.out.println("Status comparison: " + (componentDTO.getStatus() == ComponentStatus.BORROW_OUT));
 
         // Step 6: Create an activity record
         ActivityDTO activityDTO = new ActivityDTO();
@@ -146,7 +157,6 @@ public class ActivityApi {
     @PostMapping("/return")
     public ResponseEntity<String> returnItem(@RequestBody Map<String, Object> requestData) {
         Integer partId = (Integer) requestData.get("part_id");
-//        Integer employeeId = (Integer) requestData.get("employee_id");
         Integer employeeId = UserContext.getUserId();
 
         if (partId == null || employeeId == null) {
@@ -159,29 +169,38 @@ public class ActivityApi {
             return ResponseEntity.badRequest().body("Product not found.");
         }
 
+        // System.out.println("Current part status: " + componentDTO.getStatus());
+        // System.out.println("Expected status: " + ComponentStatus.BORROW_OUT);
+        // System.out.println("Status comparison: " + (componentDTO.getStatus() == ComponentStatus.BORROW_OUT));
+
         // Step 2: Check if the product is actually borrowed
         if (componentDTO.getStatus() != ComponentStatus.BORROW_OUT) {
-            return ResponseEntity.badRequest().body("Product is not currently borrowed.");
+            return ResponseEntity.badRequest().body("Part is not currently borrowed. Current status: " + componentDTO.getStatus());
         }
 
-        // Step 3: Retrieve category details using category ID
+        // Step 3: Check if the current user is the one who borrowed the item
+        if (!employeeId.equals(componentDTO.getBorrowedEmployeeId())) {
+            return ResponseEntity.badRequest().body("Only the user who borrowed this item can return it.");
+        }
+
+        // Step 4: Retrieve category details using category ID
         Integer productId = componentDTO.getProductId();
         if (productId != null) {
             CategoryDTO categoryDTO = categoryService.getCategoryById(productId);
             if (categoryDTO != null) {
-                // Step 4: Increase category available count
+                // Step 5: Increase category available count
                 categoryDTO.setNumberPartInStock(categoryDTO.getNumberPartInStock() + 1);
                 categoryDTO.setNumberPartCheckOut(categoryDTO.getNumberPartCheckOut() - 1);
                 categoryService.updateCategory(categoryDTO);
             }
         }
 
-
-        // Step 5: Update product status back to "Available"
+        // Step 6: Update product status back to "Available"
         componentDTO.setStatus(ComponentStatus.AVAILABLE);
+        componentDTO.setBorrowedEmployeeId(null); // Clear the borrowed employee ID
         componentService.updateProduct(partId, componentDTO);
 
-        // Step 6: Create an activity record
+        // Step 7: Create an activity record
         ActivityDTO activityDTO = new ActivityDTO();
         activityDTO.setPartId(partId);
         activityDTO.setProductId(productId);

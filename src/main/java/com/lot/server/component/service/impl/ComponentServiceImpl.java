@@ -51,6 +51,9 @@ public class ComponentServiceImpl implements ComponentService {
         if (dto.getPartName() != null) {
             existing.setPartName(dto.getPartName());
         }
+        if (dto.getBorrowedEmployeeId() != null) {
+            existing.setBorrowedEmployeeId(dto.getBorrowedEmployeeId());
+        }
 
         componentMapper.updateProduct(existing);
         return convertToDTO(existing);
@@ -131,6 +134,7 @@ public class ComponentServiceImpl implements ComponentService {
         dto.setProductId(entity.getProductId());
         dto.setCost(entity.getCost());
         dto.setPartName(entity.getPartName());
+        dto.setBorrowedEmployeeId(entity.getBorrowedEmployeeId());
         return dto;
     }
 }

@@ -9,6 +9,7 @@ public class ComponentDTO {
     private Integer productId;
     private Double cost;
     private String partName;
+    private Integer borrowedEmployeeId;
 
     @Override
     public String toString() {
@@ -19,6 +20,7 @@ public class ComponentDTO {
                 ", productId=" + productId +
                 ", cost=" + cost +
                 ", partName='" + partName + '\'' +
+                ", borrowedEmployeeId=" + borrowedEmployeeId +
                 '}';
     }
 
@@ -68,5 +70,13 @@ public class ComponentDTO {
 
     public void setPartName(String partName) {
         this.partName = partName;
+    }
+
+    public Integer getBorrowedEmployeeId() {
+        return borrowedEmployeeId;
+    }
+
+    public void setBorrowedEmployeeId(Integer borrowedEmployeeId) {
+        this.borrowedEmployeeId = borrowedEmployeeId;
     }
 }
