@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface ComponentMapper {
 
-    // Insert Component (using auto-increment primary key)
+// Insert Component (using auto-increment primary key)
     @Insert("INSERT INTO part (part_id, status, product_name, product_id, cost, part_name) " +
             "VALUES (#{partId}, #{status}, #{productName}, #{productId}, #{cost}, #{partName})")
     int insertProduct(ComponentDO product);
@@ -45,6 +45,15 @@ public interface ComponentMapper {
 
     @Select("SELECT part_id, part_name, return_time, borrow_employee_id FROM returned_part WHERE borrow_employee_id = #{userId}")
     List<ReturnedDTO> selectReturnedById(@Param("userId") Integer userId);
+
+    @Update("UPDATE part SET borrowed_employee_id = #{userId} WHERE part_id = #{partId}")
+    void updateBorrowedByPartId(@Param("userId") Integer userId, @Param("partId") Integer partId);
+
+    @Update("UPDATE part SET borrowed_employee_id = null WHERE part_id = #{partId}")
+    void deleteBorrowedByPartId(@Param("partId") Integer partId);
+
+    @Insert("INSERT INTO returned_part (part_id, part_name, return_time, borrow_employee_id) VALUES (#{partId}, #{partName}, #{returnTime}, #{borrowEmployeeId})")
+    void insertReturned(ReturnedDTO returnedDTO);
 
     // Query components by product ID
     @Select("SELECT part_id, status, product_name, product_id, cost, part_name, borrowed_employee_id FROM part WHERE product_id = #{productId}")

@@ -108,13 +108,13 @@ public class ActivityApi {
             return ResponseEntity.badRequest().body("Part not found.");
         }
 
-        System.out.println("Current part status: " + componentDTO.getStatus());
-        System.out.println("Expected status: " + ComponentStatus.AVAILABLE);
-        System.out.println("Status comparison: " + (componentDTO.getStatus() == ComponentStatus.AVAILABLE));
+        String debugInfo = String.format("Debug Info:\nCurrent part status: %s\nExpected status: %s\nStatus comparison: %b",
+                componentDTO.getStatus(), ComponentStatus.AVAILABLE, componentDTO.getStatus() == ComponentStatus.AVAILABLE);
 
         // Step 2: Check if the product is available for borrowing
         if (componentDTO.getStatus() != ComponentStatus.AVAILABLE) {
-            return ResponseEntity.badRequest().body("Part is not available for borrowing. Current status: " + componentDTO.getStatus());
+            // return ResponseEntity.badRequest().body("Parts is not available for borrowing. Current status: " + componentDTO.getStatus() + "\n" + debugInfo);
+            return ResponseEntity.badRequest().body("Parts is not available for borrowing. Current status: " + componentDTO.getStatus());
         }
 
         // Step 3: Retrieve category details using category ID
@@ -132,6 +132,7 @@ public class ActivityApi {
         componentDTO.setStatus(ComponentStatus.BORROW_OUT);
         componentDTO.setBorrowedEmployeeId(employeeId);
         componentService.updateProduct(partId, componentDTO);
+        componentService.updateBorrowedByPartId(employeeId, partId);
 
 
         // componentDTO = componentService.getProductById(partId);
@@ -199,6 +200,7 @@ public class ActivityApi {
         componentDTO.setStatus(ComponentStatus.AVAILABLE);
         componentDTO.setBorrowedEmployeeId(null); // Clear the borrowed employee ID
         componentService.updateProduct(partId, componentDTO);
+        componentService.createReturnedByPartId(employeeId, partId);
 
         // Step 7: Create an activity record
         ActivityDTO activityDTO = new ActivityDTO();

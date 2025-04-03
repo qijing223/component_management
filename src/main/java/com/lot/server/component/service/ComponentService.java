@@ -13,9 +13,13 @@ public interface ComponentService {
     List<ComponentDTO> getProductsByStatus(String status);
     void deleteProductById(Integer id);
     List<ComponentDTO> getAllProducts();
+
     List<ComponentDTO> getBorrowedById(Integer userId);
 
     List<ReturnedDTO> getReturnedById(Integer id);
+
+    void updateBorrowedByPartId(Integer userId, Integer partId);
+    void createReturnedByPartId(Integer userId, Integer partId);
     List<ComponentDTO> getComponentsByProductId(Integer productId);
 }
 
