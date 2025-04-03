@@ -54,7 +54,7 @@ jobs:
         run: |
           curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.10.0/flyway-commandline-9.10.0-linux-x64.tar.gz | tar xvz
           sudo ln -s $(pwd)/flyway-9.10.0/flyway /usr/local/bin/flyway
-          flyway -url=jdbc:postgresql://localhost:5432/testdb \
+          flyway -locations=filesystem:src/main/resources/db/migration -url=jdbc:postgresql://localhost:5432/testdb \
                  -user=testuser \
                  -password=testpass migrate
 
