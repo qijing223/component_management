@@ -83,10 +83,18 @@ public class ComponentServiceImpl implements ComponentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ComponentDTO> getComponentsByProductId(Integer productId) {
+        return componentMapper.selectByProductId(productId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private ComponentDO convertToDO(ComponentDTO dto) {
         ComponentDO entity = new ComponentDO();
         entity.setPartId(dto.getPartId());
-        entity.setStatus(dto.getStatus() != null ? dto.getStatus().getValue() : null);  // ✅ 使用小写字符串
+        entity.setStatus(dto.getStatus() != null ? dto.getStatus().getValue() : null);
         entity.setProductName(dto.getProductName());
         entity.setProductId(dto.getProductId());
         entity.setCost(dto.getCost());

@@ -16,7 +16,7 @@ public class ComponentApi {
     @Autowired
     private ComponentService componentService;
 
-    // 创建一个新零件组件
+    // Create a new component
     @PostMapping
     public ResponseEntity<ComponentDTO> createComponent(@RequestBody ComponentDTO dto) {
         System.out.println("Received DTO: " + dto);
@@ -24,7 +24,7 @@ public class ComponentApi {
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-    // 更新指定 ID 的组件信息
+    // Update component information by ID
     @PutMapping("/{id}")
     public ResponseEntity<ComponentDTO> updateComponent(@PathVariable Integer id,
                                                         @RequestBody ComponentDTO dto) {
@@ -36,7 +36,7 @@ public class ComponentApi {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    // 获取指定 ID 的组件
+    // Get component by ID
     @GetMapping("/{id}")
     public ResponseEntity<ComponentDTO> getComponentById(@PathVariable Integer id) {
         ComponentDTO component = componentService.getProductById(id);
@@ -46,7 +46,7 @@ public class ComponentApi {
         return new ResponseEntity<>(component, HttpStatus.OK);
     }
 
-    // get by status
+    // Get components by status
     @GetMapping("/status/{status}")
     public ResponseEntity<List<ComponentDTO>> getComponentsByStatus(@PathVariable String status) {
         List<ComponentDTO> components = componentService.getProductsByStatus(status);
@@ -56,14 +56,14 @@ public class ComponentApi {
         return new ResponseEntity<>(components, HttpStatus.OK);
     }
 
-    // delete
+    // Delete component
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComponent(@PathVariable Integer id) {
         componentService.deleteProductById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // 获取所有组件
+    // Get all components
     @GetMapping
     public ResponseEntity<List<ComponentDTO>> getAllComponents() {
         List<ComponentDTO> all = componentService.getAllProducts();

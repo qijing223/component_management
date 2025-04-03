@@ -12,5 +12,6 @@ public interface ComponentService {
     List<ComponentDTO> getProductsByStatus(String status);
     void deleteProductById(Integer id);
     List<ComponentDTO> getAllProducts();
+    List<ComponentDTO> getComponentsByProductId(Integer productId);
 }
 

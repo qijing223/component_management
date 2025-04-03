@@ -4,6 +4,8 @@ import com.lot.server.category.domain.entity.CategoryDO;
 import com.lot.server.category.domain.model.CategoryDTO;
 import com.lot.server.category.mapper.CategoryMapper;
 import com.lot.server.category.service.CategoryService;
+import com.lot.server.component.domain.model.ComponentDTO;
+import com.lot.server.component.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ComponentService componentService;
 
     @Override
     public CategoryDTO getCategoryById(Integer id) {
@@ -47,6 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategoryById(Integer id) {
         categoryMapper.deleteCategoryById(id);
+    }
+
+    @Override
+    public List<ComponentDTO> getComponentsByProductId(Integer productId) {
+        return componentService.getComponentsByProductId(productId);
     }
 
     private CategoryDTO convertToDTO(CategoryDO doObj) {
