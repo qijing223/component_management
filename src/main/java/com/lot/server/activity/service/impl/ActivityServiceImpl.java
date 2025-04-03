@@ -5,6 +5,7 @@ import com.lot.server.activity.domain.entity.EmployeeActivity;
 import com.lot.server.activity.domain.model.ActivityDTO;
 import com.lot.server.activity.mapper.ActivityMapper;
 import com.lot.server.activity.service.ActivityService;
+import com.lot.server.employee.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 public class ActivityServiceImpl implements ActivityService {
 
     private final ActivityMapper employeeActivityMapper;
+    private final EmployeeMapper employeeMapper;
 
-    public ActivityServiceImpl(ActivityMapper employeeActivityMapper) {
+    public ActivityServiceImpl(ActivityMapper employeeActivityMapper, EmployeeMapper employeeMapper) {
         this.employeeActivityMapper = employeeActivityMapper;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
@@ -44,8 +47,24 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityDTO> getAllActivities() {
+    public List<ActivityDTO> getActivities(Integer employeeId) {
+        String userType = employeeMapper.getEmployeeTypeById(employeeId);
+        if(userType.equals("Admin")){
+            return getAllActivities();
+        } else {
+            return getUserActivities(employeeId);
+        }
+    }
+
+    private List<ActivityDTO> getAllActivities() {
         List<EmployeeActivity> activities = employeeActivityMapper.selectAll();
+        return activities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private List<ActivityDTO> getUserActivities(Integer userId) {
+        List<EmployeeActivity> activities = employeeActivityMapper.selectByEmployeeId(userId);
         return activities.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

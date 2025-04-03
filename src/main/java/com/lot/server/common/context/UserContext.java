@@ -1,13 +1,13 @@
 package com.lot.server.common.context;
 
 public class UserContext {
-    private static ThreadLocal<String> userThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Integer> userThreadLocal = new ThreadLocal<>();
 
-    public static void setUserName(String userName) {
-        userThreadLocal.set(userName);
+    public static void setUserId(Integer userId) {
+        userThreadLocal.set(userId);
     }
 
-    public static String getUserName() {
+    public static Integer getUserId() {
         return userThreadLocal.get();
     }
 

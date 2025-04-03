@@ -2,6 +2,7 @@ package com.lot.server.component.service;
 
 import com.lot.server.common.bean.ResultTO;
 import com.lot.server.component.domain.model.ComponentDTO;
+import com.lot.server.component.domain.model.ReturnedDTO;
 
 import java.util.List;
 
@@ -12,6 +13,9 @@ public interface ComponentService {
     List<ComponentDTO> getProductsByStatus(String status);
     void deleteProductById(Integer id);
     List<ComponentDTO> getAllProducts();
+    List<ComponentDTO> getBorrowedById(Integer userId);
+
+    List<ReturnedDTO> getReturnedById(Integer id);
     List<ComponentDTO> getComponentsByProductId(Integer productId);
 }
 

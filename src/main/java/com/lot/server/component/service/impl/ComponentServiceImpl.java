@@ -1,9 +1,11 @@
 package com.lot.server.component.service.impl;
 
 import com.lot.server.common.bean.ResultTO;
+import com.lot.server.common.context.UserContext;
 import com.lot.server.component.domain.entity.ComponentStatus;
 import com.lot.server.component.domain.model.ComponentDTO;
 import com.lot.server.component.domain.entity.ComponentDO;
+import com.lot.server.component.domain.model.ReturnedDTO;
 import com.lot.server.component.mapper.ComponentMapper;
 import com.lot.server.component.service.ComponentService;
 import org.springframework.stereotype.Service;
@@ -84,6 +86,21 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     @Override
+    public List<ComponentDTO> getBorrowedById(Integer userId) {
+        return componentMapper.selectBorrowedById(userId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReturnedDTO> getReturnedById(Integer userId) {
+        return componentMapper.selectReturnedById(userId)
+                .stream()
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ComponentDTO> getComponentsByProductId(Integer productId) {
         return componentMapper.selectByProductId(productId)
                 .stream()
@@ -99,6 +116,7 @@ public class ComponentServiceImpl implements ComponentService {
         entity.setProductId(dto.getProductId());
         entity.setCost(dto.getCost());
         entity.setPartName(dto.getPartName());
+        entity.setBorrowedEmployeeId(UserContext.getUserId());
         return entity;
     }
 

@@ -38,5 +38,6 @@ public interface ActivityService {
      * Retrieves all activity records.
      * @return list of all activity records
      */
-    List<ActivityDTO> getAllActivities();
+
+    List<ActivityDTO> getActivities(Integer userId);
 }

@@ -23,18 +23,19 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public ResultTO<String> login(UserLoginDTO userLoginDTO) {
-        String username = userLoginDTO.getEmployeeName();
+        String employeeName = userLoginDTO.getEmployeeName();
         String password = userLoginDTO.getPassword();
-        String realPassword = employeeMapper.getPasswordByUsername(username);
-        System.out.println(username + " " + realPassword);
+        String realPassword = employeeMapper.getPasswordByEmployeeName(employeeName);
+        Integer employeeId = employeeMapper.getEmployeeIdByUsername(employeeName);
+        System.out.println("Login User: " + employeeName + " " + employeeId);
 
         if(password.equals(realPassword)){
             Map<String, Object> claims = new HashMap<>();
-            claims.put(JwtClaimsConstant.USER_NAME, userLoginDTO.getEmployeeName());
+            claims.put(JwtClaimsConstant.USER_ID, employeeId);
             String jwtToken = JwtUtils.createJWT(jwtProperties.getSecretKey(), jwtProperties.getTtl(), claims);
             return ResultTO.success(jwtToken);
         } else {
-            return ResultTO.error(401,"Wrong username or password");
+            return ResultTO.error(401,"Wrong employee name or password");
         }
     }
 }
