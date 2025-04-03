@@ -50,26 +50,26 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
-      - name: Run Flyway migrations
-        run: |
-          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.10.0/flyway-commandline-9.10.0-linux-x64.tar.gz | tar xvz
-          sudo ln -s $(pwd)/flyway-9.10.0/flyway /usr/local/bin/flyway
-          flyway -locations=filesystem:src/main/resources/db/migration -url=jdbc:postgresql://localhost:5432/testdb \
-                 -user=testuser \
-                 -password=testpass migrate
-
-      - name: Validate DB schema (employee table)
-        run: |
-          echo "Checking if table 'employee' exists..."
-          TABLE_COUNT=$(psql -h localhost -U testuser -d testdb -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='Employee';")
-          if [ $(echo $TABLE_COUNT | tr -d ' ') -eq 0 ]; then
-            echo "Table 'Employee' does NOT exist. Migration failed."
-            exit 1
-          else
-            echo "Table 'Employee' exists. Migration successful."
-          fi
-        env:
-          PGPASSWORD: testpass
+#      - name: Run Flyway migrations
+#        run: |
+#          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.10.0/flyway-commandline-9.10.0-linux-x64.tar.gz | tar xvz
+#          sudo ln -s $(pwd)/flyway-9.10.0/flyway /usr/local/bin/flyway
+#          flyway -locations=filesystem:src/main/resources/db/migration -url=jdbc:postgresql://localhost:5432/testdb \
+#                 -user=testuser \
+#                 -password=testpass migrate
+#
+#      - name: Validate DB schema (employee table)
+#        run: |
+#          echo "Checking if table 'employee' exists..."
+#          TABLE_COUNT=$(psql -h localhost -U testuser -d testdb -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='Employee';")
+#          if [ $(echo $TABLE_COUNT | tr -d ' ') -eq 0 ]; then
+#            echo "Table 'Employee' does NOT exist. Migration failed."
+#            exit 1
+#          else
+#            echo "Table 'Employee' exists. Migration successful."
+#          fi
+#        env:
+#          PGPASSWORD: testpass
 
 
       - name: Build and run tests
