@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
-    private EmployeeMapper employeeMapper;
+    public EmployeeMapper employeeMapper;
 
     @Override
     public EmployeeDTO getEmployeeById(Integer id) {
