@@ -18,7 +18,7 @@ public class ActivityActionTypeHandler extends BaseTypeHandler<ActivityAction> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, ActivityAction parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.name());
+        ps.setString(i, parameter.toString());
     }
 
     @Override
