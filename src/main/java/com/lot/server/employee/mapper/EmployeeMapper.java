@@ -40,4 +40,7 @@ public interface EmployeeMapper {
 
     @Select("SELECT user_type FROM employee WHERE employee_id = #{id}")
     String getEmployeeTypeById(Integer id);
+
+    @Insert("INSERT INTO employee (id, type) VALUES (#{id}, #{type})")
+    void insertTestUser(@Param("id") Integer id, @Param("type") String type);
 }
