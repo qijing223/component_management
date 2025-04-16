@@ -52,7 +52,11 @@ jobs:
             ${{ runner.os }}-maven
             
       - name: Build and run tests
-        run: mvn clean verify
+        run: mvn clean verify -Dspring.profiles.active=test
+        env:
+          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 
 #      - name: Run Flyway migrations
 #        run: |
