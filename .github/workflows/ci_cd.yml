@@ -7,9 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-test-deploy:
+  test:
+    name: Build & Test (Staging)
     runs-on: ubuntu-latest
-
+    environment: staging
     env:
       SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
       SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
@@ -49,6 +50,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven
+            
+      - name: Build and run tests
+        run: mvn clean verify
 
 #      - name: Run Flyway migrations
 #        run: |
@@ -71,44 +75,96 @@ jobs:
 #        env:
 #          PGPASSWORD: testpass
 #      ?
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && needs.test.result == 'success'
+    environment: production
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Build and run tests
-        run: mvn clean verify
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
 
-      - name: Deploy to production
-        if: github.ref == 'refs/heads/main' && success()
-        run: |
-          echo "Deploying..." 
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: Build package (skip tests)
+        run: mvn clean package -DskipTests
 
       - name: Set up SSH key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
       - name: Upload JAR to server
-        if: github.ref == 'refs/heads/main' && success()
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-          scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar azureuser@172.191.111.81:/home/azureuser/app.jar
+          scp -i private_key.pem \
+            -o StrictHostKeyChecking=no \
+            target/*.jar \
+            azureuser@172.191.111.81:/home/azureuser/app.jar
 
       - name: SSH and restart app
-        if: github.ref == 'refs/heads/main' && success()
         env:
           SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no azureuser@172.191.111.81 << EOF
-            echo "Killing old app process (if running)..."
+          ssh -i private_key.pem \
+              -o StrictHostKeyChecking=no \
+              azureuser@172.191.111.81 << 'EOF'
             pkill -f 'java -jar /home/azureuser/app.jar' || true
-
-            echo "Starting new app with injected env vars..."
             SPRING_DATASOURCE_URL="${SPRING_DATASOURCE_URL}" \
             SPRING_DATASOURCE_USERNAME="${SPRING_DATASOURCE_USERNAME}" \
             SPRING_DATASOURCE_PASSWORD="${SPRING_DATASOURCE_PASSWORD}" \
-            nohup java -jar /home/azureuser/app.jar > app.log 2>&1 &
-
-            echo "App deployed and started with environment variables."
+              nohup java -jar /home/azureuser/app.jar > app.log 2>&1 &
           EOF
+
+#      - name: Build and run tests
+#        run: mvn clean verify
+#
+#      - name: Deploy to production
+#        if: github.ref == 'refs/heads/main' && success()
+#        run: |
+#          echo "Deploying..."
+#
+#      - name: Set up SSH key
+#        run: |
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+#          chmod 600 private_key.pem
+#
+#      - name: Upload JAR to server
+#        if: github.ref == 'refs/heads/main' && success()
+#        run: |
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+#          chmod 600 private_key.pem
+#          scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar azureuser@172.191.111.81:/home/azureuser/app.jar
+#
+#      - name: SSH and restart app
+#        if: github.ref == 'refs/heads/main' && success()
+#        env:
+#          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+#          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+#          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+#        run: |
+#          ssh -i private_key.pem -o StrictHostKeyChecking=no azureuser@172.191.111.81 << EOF
+#            echo "Killing old app process (if running)..."
+#            pkill -f 'java -jar /home/azureuser/app.jar' || true
+#
+#            echo "Starting new app with injected env vars..."
+#            SPRING_DATASOURCE_URL="${SPRING_DATASOURCE_URL}" \
+#            SPRING_DATASOURCE_USERNAME="${SPRING_DATASOURCE_USERNAME}" \
+#            SPRING_DATASOURCE_PASSWORD="${SPRING_DATASOURCE_PASSWORD}" \
+#            nohup java -jar /home/azureuser/app.jar > app.log 2>&1 &
+#
+#            echo "App deployed and started with environment variables."
+#          EOF
