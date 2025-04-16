@@ -114,20 +114,19 @@ jobs:
             azureuser@172.191.111.81:/home/azureuser/app.jar
 
       - name: SSH and restart app
-        env:
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
         run: |
-          ssh -i private_key.pem \
-              -o StrictHostKeyChecking=no \
-              azureuser@172.191.111.81 << 'EOF'
+          ssh -i private_key.pem -o StrictHostKeyChecking=no azureuser@172.191.111.81 <<EOF
+            set -eux
             pkill -f 'java -jar /home/azureuser/app.jar' || true
-            SPRING_DATASOURCE_URL="${SPRING_DATASOURCE_URL}" \
-            SPRING_DATASOURCE_USERNAME="${SPRING_DATASOURCE_USERNAME}" \
-            SPRING_DATASOURCE_PASSWORD="${SPRING_DATASOURCE_PASSWORD}" \
-              nohup java -jar /home/azureuser/app.jar > app.log 2>&1 &
+
+            export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
+            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+
+            nohup java -jar /home/azureuser/app.jar --server.port=8081 \
+              > /home/azureuser/app.log 2>&1 &
           EOF
+
 
 #      - name: Build and run tests
 #        run: mvn clean verify
