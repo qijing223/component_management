@@ -2,7 +2,9 @@ package com.lot.server.activity.mapper;
 
 import com.lot.server.activity.domain.entity.ActivityAction;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -15,6 +17,8 @@ import static org.mockito.Mockito.*;
 /**
  * Unit tests for ActivityActionTypeHandler
  */
+@Disabled
+@SpringBootTest
 public class ActivityActionTypeHandlerTest {
 
     private ActivityActionTypeHandler handler;

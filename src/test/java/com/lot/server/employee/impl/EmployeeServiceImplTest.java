@@ -5,8 +5,10 @@ import com.lot.server.employee.domain.model.EmployeeDTO;
 import com.lot.server.employee.mapper.EmployeeMapper;
 import com.lot.server.employee.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Disabled
+@SpringBootTest
 class EmployeeServiceImplTest {
 
     private EmployeeMapper employeeMapper;

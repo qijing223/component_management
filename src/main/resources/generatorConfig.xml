@@ -18,7 +18,7 @@
                         password="slb123456"/>
 
         <!-- 实体类 DO 输出到 domain.entity 包 -->
-        <javaModelGenerator targetPackage="com.lot.server.component.domain.entity"
+        <javaModelGenerator targetPackage="com.lot.server.part.domain.entity"
                             targetProject="src/main/java"/>
 
         <!-- Mapper XML 输出到 resources/mapper 目录 -->
@@ -27,7 +27,7 @@
 
         <!-- Mapper 接口输出到 component.mapper 包 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.lot.server.component.mapper"
+                             targetPackage="com.lot.server.part.mapper"
                              targetProject="src/main/java"/>
 
         <!-- 生成 product 表对应的 DO、Mapper 等 -->

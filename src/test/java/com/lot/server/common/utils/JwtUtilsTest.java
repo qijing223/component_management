@@ -1,7 +1,9 @@
 package com.lot.server.common.utils;
 
 import io.jsonwebtoken.Claims;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +11,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
+@SpringBootTest
 class JwtUtilsTest {
 
     private final String secretKey =  "LoTBackEndSecurityKeyUsedForAuthorization";

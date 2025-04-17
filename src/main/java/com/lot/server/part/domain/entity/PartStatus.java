@@ -1,16 +1,16 @@
-package com.lot.server.component.domain.entity;
+package com.lot.server.part.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ComponentStatus {
+public enum PartStatus {
     AVAILABLE("available"),
     BORROW_OUT("borrow-out"),
     UNAVAILABLE("unavailable");
 
     private final String value;
 
-    ComponentStatus(String value) {
+    PartStatus(String value) {
         this.value = value;
     }
 
@@ -21,8 +21,8 @@ public enum ComponentStatus {
     }
 
     @JsonCreator
-    public static ComponentStatus fromValue(String value) {
-        for (ComponentStatus status : ComponentStatus.values()) {
+    public static PartStatus fromValue(String value) {
+        for (PartStatus status : PartStatus.values()) {
             if (status.value.equals(value)) {
                 return status;
             }

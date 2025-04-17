@@ -1,8 +1,9 @@
 package com.lot.server.api;
 
-import com.lot.server.category.domain.model.CategoryDTO;
-import com.lot.server.category.service.CategoryService;
-import com.lot.server.component.domain.model.ComponentDTO;
+import com.lot.server.part.domain.model.PartDTO;
+import com.lot.server.part.service.PartService;
+import com.lot.server.product.domain.model.ProductDTO;
+import com.lot.server.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,38 +15,41 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
-public class CategoryApi {
+public class ProductApi {
 
-    private static final Logger logger = LoggerFactory.getLogger(CategoryApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProductApi.class);
 
     @Autowired
-    private CategoryService categoryService;
+    private ProductService productService;
+
+    @Autowired
+    private PartService partService;
 
     // Get category by product ID
     @GetMapping("/{id}")
-    public CategoryDTO getCategoryById(@PathVariable Integer id) {
-        return categoryService.getCategoryById(id);
+    public ProductDTO getCategoryById(@PathVariable Integer id) {
+        return productService.getProductById(id);
     }
 
     // Get category by product name
     @GetMapping("/name/{name}")
-    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
-        CategoryDTO category = categoryService.getCategoryByName(name);
-        return category != null ? ResponseEntity.ok(category) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<ProductDTO> getCategoryByName(@PathVariable String name) {
+        ProductDTO productDTO = productService.getProductByName(name);
+        return productDTO != null ? ResponseEntity.ok(productDTO) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // Get all categories
     @GetMapping
-    public List<CategoryDTO> getAllCategories() {
-        return categoryService.getAllCategories();
+    public List<ProductDTO> getAllCategories() {
+        return productService.getAllProducts();
     }
 
     // Add new category
     @PostMapping
-    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<ProductDTO> addCategory(@RequestBody ProductDTO productDTO) {
         try {
-            categoryService.addCategory(categoryDTO);
-            CategoryDTO createdCategory = categoryService.getCategoryByName(categoryDTO.getProductName());
+            productService.addProduct(productDTO);
+            ProductDTO createdCategory = productService.getProductByName(productDTO.getProductName());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(createdCategory);
         } catch (Exception e) {
@@ -56,9 +60,9 @@ public class CategoryApi {
 
     // Update category by product ID
     @PutMapping("/{id}")
-    public String updateCategory(@PathVariable Integer id, @RequestBody CategoryDTO categoryDTO) {
-        categoryDTO.setProductId(id);
-        categoryService.updateCategory(categoryDTO);
+    public String updateCategory(@PathVariable Integer id, @RequestBody ProductDTO productDTO) {
+        productDTO.setProductId(id);
+        productService.updateProduct(productDTO);
         return "Category updated successfully!";
     }
 
@@ -67,13 +71,13 @@ public class CategoryApi {
     public ResponseEntity<String> deleteCategory(@PathVariable Integer id) {
         try {
             // First check if the product exists
-            CategoryDTO category = categoryService.getCategoryById(id);
-            if (category == null) {
+            ProductDTO productDTO = productService.getProductById(id);
+            if (productDTO == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Product not found with ID: " + id);
             }
             
-            categoryService.deleteCategoryById(id);
+            productService.deleteProductById(id);
             return ResponseEntity.ok("Product deleted successfully!");
         } catch (Exception e) {
             logger.error("Error deleting product with ID {}: {}", id, e.getMessage(), e);
@@ -88,15 +92,15 @@ public class CategoryApi {
 
     // Get all components by product ID
     @GetMapping("/{id}/parts")
-    public ResponseEntity<List<ComponentDTO>> getPartsByProductId(@PathVariable Integer id) {
+    public ResponseEntity<List<PartDTO>> getPartsByProductId(@PathVariable Integer id) {
         // First check if the product exists
-        CategoryDTO category = categoryService.getCategoryById(id);
-        if (category == null) {
+        ProductDTO productDTO = productService.getProductById(id);
+        if (productDTO == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .build();
         }
         
-        List<ComponentDTO> components = categoryService.getComponentsByProductId(id);
-        return ResponseEntity.ok(components);
+        List<PartDTO> parts = partService.getPartsByProductId(id);
+        return ResponseEntity.ok(parts);
     }
 }

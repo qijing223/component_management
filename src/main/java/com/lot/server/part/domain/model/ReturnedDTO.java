@@ -1,7 +1,6 @@
-package com.lot.server.component.domain.model;
+package com.lot.server.part.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class ReturnedDTO {
     private Integer partId;

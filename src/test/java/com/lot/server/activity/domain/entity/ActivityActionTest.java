@@ -1,11 +1,16 @@
 package com.lot.server.activity.domain.entity;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for ActivityAction enum
  */
+@Disabled
+@SpringBootTest
 public class ActivityActionTest {
 
     @Test

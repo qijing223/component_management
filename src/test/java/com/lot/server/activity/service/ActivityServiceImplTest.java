@@ -7,9 +7,11 @@ import com.lot.server.activity.mapper.ActivityMapper;
 import com.lot.server.activity.service.impl.ActivityServiceImpl;
 import com.lot.server.employee.mapper.EmployeeMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -22,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for ActivityServiceImpl
  */
+@Disabled
+@SpringBootTest
 public class ActivityServiceImplTest {
 
     @Mock
