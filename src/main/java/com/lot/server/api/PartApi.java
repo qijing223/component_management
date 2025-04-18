@@ -6,6 +6,8 @@ import com.lot.server.part.domain.entity.PartStatus;
 import com.lot.server.part.domain.model.PartDTO;
 import com.lot.server.part.domain.model.ReturnedDTO;
 import com.lot.server.part.service.PartService;
+import com.lot.server.product.domain.model.ProductDTO;
+import com.lot.server.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class PartApi {
 
     @Autowired
     private PartService partService;
+    
+    @Autowired
+    private ProductService productService;
 
     // Create a new component
     @PostMapping
@@ -89,5 +94,26 @@ public class PartApi {
         Integer userId = UserContext.getUserId();
         List<ReturnedDTO> returnedDTO = partService.getReturnedById(userId);
         return ResultTO.success(returnedDTO);
+    }
+    
+    // Get product information by part ID
+    @GetMapping("/{id}/product")
+    public ResponseEntity<ProductDTO> getProductByPartId(@PathVariable Integer id) {
+        PartDTO part = partService.getPartById(id);
+        if (part == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        Integer productId = part.getProductId();
+        if (productId == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        ProductDTO product = productService.getProductById(productId);
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }
