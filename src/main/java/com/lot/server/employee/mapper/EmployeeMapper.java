@@ -44,6 +44,6 @@ public interface EmployeeMapper {
     @Insert("INSERT INTO employee (id, type) VALUES (#{id}, #{type})")
     void insertTestUser(@Param("id") Integer id, @Param("type") String type);
 
-    @Select("SELECT COUNT(*) FROM part WHERE borrowed_employee_id = #{id} AND status != 'returned'")
+    @Select("SELECT COUNT(*) FROM part WHERE borrowed_employee_id = #{id} AND status = 'borrow-out'")
     int countUnreturnedParts(@Param("id") Integer id);
 }
