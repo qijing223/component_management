@@ -11,5 +11,6 @@ public interface ProductService {
     void addProduct(ProductDTO categoryDTO);
     void updateProduct(ProductDTO categoryDTO);
     void deleteProductById(Integer id);
+    public List<Integer> getPartNumbersByProductId(Integer productId);
 }
 

@@ -52,4 +52,5 @@ public interface ProductMapper {
             @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
     })
     int deleteProductById(@Param("id") Integer id);
+
 }
