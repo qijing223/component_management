@@ -13,5 +13,5 @@ public class ProductDO {
     private Double totalCost;
     private Integer numberPartCheckOut;
     private Date leadTime;
-    private String partList;
+    private Map<String, Object> partList;
 }
