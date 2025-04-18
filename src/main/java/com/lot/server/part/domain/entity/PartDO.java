@@ -12,5 +12,5 @@ public class PartDO {
     private Integer borrowedEmployeeId;
     private PartStatus status;
     private Double cost;
-    private Map<String, Object> productId;
+    private Integer productId;
 }

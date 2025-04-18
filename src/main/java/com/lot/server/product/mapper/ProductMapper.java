@@ -31,10 +31,7 @@ public interface ProductMapper {
 
     // Insert new product
     @Insert("INSERT INTO Product (product_id, product_name, number_part_in_stock, total_cost, number_part_check_out, lead_time, part_list) " +
-            "VALUES (#{productId}, #{productName}, #{numberPartInStock}, #{totalCost}, #{numberPartCheckOut}, #{leadTime}, #{partList})")
-    @Results({
-            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
-    })
+            "VALUES (#{productId}, #{productName}, #{numberPartInStock}, #{totalCost}, #{numberPartCheckOut}, #{leadTime}, #{partList, jdbcType=VARCHAR, typeHandler=com.lot.server.product.mapper.JsonMapTypeHandler})")
     @Options(useGeneratedKeys = true, keyProperty = "productId", keyColumn = "product_id")
     int insertProduct(ProductDTO productDTO);
 
@@ -45,11 +42,8 @@ public interface ProductMapper {
             "total_cost = #{totalCost}, " +
             "number_part_check_out = #{numberPartCheckOut}, " +
             "lead_time = #{leadTime}, " +
-            "part_list = #{partList} " +
+            "part_list = #{partList, jdbcType=VARCHAR, typeHandler=com.lot.server.product.mapper.JsonMapTypeHandler} " +
             "WHERE product_id = #{productId}")
-    @Results({
-            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
-    })
     int updateProduct(ProductDTO productDTO);
 
     // Delete product by ID

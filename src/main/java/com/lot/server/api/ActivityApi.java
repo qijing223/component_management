@@ -117,7 +117,7 @@ public class ActivityApi {
         }
 
         // 获取产品详情
-        Map<String, Object> productId = partDTO.getProductId();
+        Integer productId = partDTO.getProductId();
         if (productId != null) {
             ProductDTO productDTO = productService.getProductById(productId);
             if (productDTO != null) {
