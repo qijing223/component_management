@@ -3,9 +3,12 @@ package com.lot.server.api;
 import com.lot.server.activity.domain.entity.ActivityAction;
 import com.lot.server.activity.domain.model.ActivityDTO;
 import com.lot.server.activity.service.ActivityService;
+import com.lot.server.product.domain.model.ProductDTO;
 import com.lot.server.product.service.ProductService;
 import com.lot.server.common.bean.ResultTO;
 import com.lot.server.common.context.UserContext;
+import com.lot.server.part.domain.entity.PartStatus;
+import com.lot.server.part.domain.model.PartDTO;
 import com.lot.server.part.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -93,61 +96,52 @@ public class ActivityApi {
     @PostMapping("/borrow")
     public ResponseEntity<String> borrow(@RequestBody Map<String, Object> requestData) {
         Integer partId = (Integer) requestData.get("part_id");
-//        Integer employeeId = (Integer) requestData.get("employee_id");
         Integer employeeId = UserContext.getUserId();
 
         if (partId == null || employeeId == null) {
             return ResponseEntity.badRequest().body("part_id and employee_id are required.");
         }
 
-        // TODO change to PartDTO
-//        // Step 1: Retrieve product details
-//        ComponentDTO componentDTO = partService.getProductById(partId);
-//        if (componentDTO == null) {
-//            return ResponseEntity.badRequest().body("Part not found.");
-//        }
-//
-//        String debugInfo = String.format("Debug Info:\nCurrent part status: %s\nExpected status: %s\nStatus comparison: %b",
-//                componentDTO.getStatus(), PartStatus.AVAILABLE, componentDTO.getStatus() == PartStatus.AVAILABLE);
-//
-//        // Step 2: Check if the product is available for borrowing
-//        if (componentDTO.getStatus() != PartStatus.AVAILABLE) {
-//            // return ResponseEntity.badRequest().body("Parts is not available for borrowing. Current status: " + componentDTO.getStatus() + "\n" + debugInfo);
-//            return ResponseEntity.badRequest().body("Parts is not available for borrowing. Current status: " + componentDTO.getStatus());
-//        }
-//
-//        // Step 3: Retrieve category details using category ID
-//        Integer productId = componentDTO.getProductId();
-//        if (productId != null) {
-//            CategoryDTO categoryDTO = categoryService.getCategoryById(productId);
-//            if (categoryDTO != null) {
-//                categoryDTO.setNumberPartInStock(categoryDTO.getNumberPartInStock() - 1);
-//                categoryDTO.setNumberPartCheckOut(categoryDTO.getNumberPartCheckOut() + 1);
-//                categoryService.updateCategory(categoryDTO);
-//            }
-//        }
-//
-//        // Step 5: Update product status to "Borrowed"
-//        componentDTO.setStatus(PartStatus.BORROW_OUT);
-//        componentDTO.setBorrowedEmployeeId(employeeId);
-//        partService.updateProduct(partId, componentDTO);
-//        partService.updateBorrowedByPartId(employeeId, partId);
+        // 获取零件详情
+        PartDTO partDTO = partService.getPartById(partId);
+        if (partDTO == null) {
+            return ResponseEntity.badRequest().body("Part not found.");
+        }
 
+        String debugInfo = String.format("Debug Info:\nCurrent part status: %s\nExpected status: %s\nStatus comparison: %b",
+                partDTO.getStatus(), PartStatus.AVAILABLE, partDTO.getStatus() == PartStatus.AVAILABLE);
 
-//        // componentDTO = componentService.getProductById(partId);
-//        // System.out.println("Updated part status: " + componentDTO.getStatus());
-//        // System.out.println("Expected status: " + ComponentStatus.BORROW_OUT);
-//        // System.out.println("Status comparison: " + (componentDTO.getStatus() == ComponentStatus.BORROW_OUT));
-//
-//        // Step 6: Create an activity record
-//        ActivityDTO activityDTO = new ActivityDTO();
-//        activityDTO.setPartId(partId);
-//        activityDTO.setEmployeeId(employeeId);
-//        activityDTO.setProductId(productId);
-//        activityDTO.setAction(ActivityAction.BORROW);
-//        activityDTO.setOperateTime(LocalDateTime.now());
-//
-//        activityService.borrow(activityDTO);
+        // 检查零件是否可借用
+        if (partDTO.getStatus() != PartStatus.AVAILABLE) {
+            return ResponseEntity.badRequest().body("Parts is not available for borrowing. Current status: " + partDTO.getStatus());
+        }
+
+        // 获取产品详情
+        Integer productId = partDTO.getProductId();
+        if (productId != null) {
+            ProductDTO productDTO = productService.getProductById(productId);
+            if (productDTO != null) {
+                productDTO.setNumberPartInStock(productDTO.getNumberPartInStock() - 1);
+                productDTO.setNumberPartCheckOut(productDTO.getNumberPartCheckOut() + 1);
+                productService.updateProduct(productDTO);
+            }
+        }
+
+        // 更新零件状态为"已借出"
+        partDTO.setStatus(PartStatus.BORROW_OUT);
+        partDTO.setBorrowedEmployeeId(employeeId);
+        partService.updatePart(partId, partDTO);
+        partService.updateBorrowedByPartId(employeeId, partId);
+
+        // 创建活动记录
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setPartId(partId);
+        activityDTO.setEmployeeId(employeeId);
+        activityDTO.setProductId(productId);
+        activityDTO.setAction(ActivityAction.BORROW);
+        activityDTO.setOperateTime(LocalDateTime.now());
+
+        activityService.borrow(activityDTO);
 
         return ResponseEntity.ok("Borrow operation successful.");
     }
