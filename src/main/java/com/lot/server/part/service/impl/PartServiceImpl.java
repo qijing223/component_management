@@ -81,6 +81,7 @@ public class PartServiceImpl implements PartService {
         ReturnedDTO returnedDTO = new ReturnedDTO();
         BeanUtils.copyProperties(partDTO, returnedDTO);
         returnedDTO.setReturnTime(LocalDateTime.now());
+        returnedDTO.setBorrowEmployeeId(userId);
         partMapper.insertReturned(returnedDTO);
     }
 
