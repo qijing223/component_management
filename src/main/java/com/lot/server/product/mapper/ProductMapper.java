@@ -42,7 +42,7 @@ public interface ProductMapper {
             "total_cost = #{totalCost}, " +
             "number_part_check_out = #{numberPartCheckOut}, " +
             "lead_time = #{leadTime}, " +
-            "part_list = #{partList, jdbcType=VARCHAR, typeHandler=com.lot.server.product.mapper.JsonMapTypeHandler} " +
+            "part_list = CAST(#{partList, jdbcType=VARCHAR, typeHandler=com.lot.server.product.mapper.JsonMapTypeHandler} AS json) " +
             "WHERE product_id = #{productId}")
     int updateProduct(ProductDTO productDTO);
 
