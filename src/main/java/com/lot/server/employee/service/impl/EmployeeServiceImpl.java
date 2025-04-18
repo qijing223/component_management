@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
@@ -31,6 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (employee == null || employee.getEmployee_name() == null || employee.getPassword() == null) {
             return false;
         }
+        String hashedPassword = hash.sha256(employee.getPassword());
+        employee.setPassword(hashedPassword);
+
         return employeeMapper.addEmployee(employee) > 0;
     }
 
@@ -45,7 +49,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public boolean deleteEmployee(Integer id) {
-        return (id != null) && employeeMapper.deleteEmployee(id) > 0;
+        if (id == null) {
+            return false;
+        }
+
+        int unreturned = employeeMapper.countUnreturnedParts(id);
+        if (unreturned > 0) {
+            System.out.println("This employee has something unreturned. Can't be deleted.");
+            return false;
+        }
+
+        return employeeMapper.deleteEmployee(id) > 0;
     }
 
     private EmployeeDTO convertToDTO(EmployeeEntity entity) {

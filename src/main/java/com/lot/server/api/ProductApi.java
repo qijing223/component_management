@@ -91,16 +91,14 @@ public class ProductApi {
     }
 
     // Get all components by product ID
-    @GetMapping("/{id}/parts")
-    public ResponseEntity<List<PartDTO>> getPartsByProductId(@PathVariable Integer id) {
-        // First check if the product exists
+    @GetMapping("/{id}/part_numbers")
+    public ResponseEntity<List<Integer>> getPartNumbersByProductId(@PathVariable Integer id) {
         ProductDTO productDTO = productService.getProductById(id);
         if (productDTO == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
-        List<PartDTO> parts = partService.getPartsByProductId(id);
-        return ResponseEntity.ok(parts);
+
+        List<Integer> partNumbers = productService.getPartNumbersByProductId(id);
+        return ResponseEntity.ok(partNumbers);
     }
 }
