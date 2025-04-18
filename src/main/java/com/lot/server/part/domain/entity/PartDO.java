@@ -2,6 +2,8 @@ package com.lot.server.part.domain.entity;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class PartDO {
     private Integer partNumber;
@@ -10,5 +12,5 @@ public class PartDO {
     private Integer borrowedEmployeeId;
     private PartStatus status;
     private Double cost;
-    private Integer productId;
+    private Map<String, Object> productId;
 }

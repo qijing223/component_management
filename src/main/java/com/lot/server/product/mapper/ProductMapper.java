@@ -10,19 +10,31 @@ public interface ProductMapper {
 
     // Query by product_id
     @Select("SELECT * FROM Product WHERE product_id = #{id}")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     ProductDTO selectProductById(@Param("id") Integer id);
 
     // Query by product_name
     @Select("SELECT * FROM Product WHERE product_name = #{name}")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     ProductDTO selectProductByName(@Param("name") String name);
 
     // Query all products
     @Select("SELECT * FROM Product")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     List<ProductDTO> selectAllProducts();
 
     // Insert new product
     @Insert("INSERT INTO Product (product_id, product_name, number_part_in_stock, total_cost, number_part_check_out, lead_time, part_list) " +
             "VALUES (#{productId}, #{productName}, #{numberPartInStock}, #{totalCost}, #{numberPartCheckOut}, #{leadTime}, #{partList})")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     @Options(useGeneratedKeys = true, keyProperty = "productId", keyColumn = "product_id")
     int insertProduct(ProductDTO productDTO);
 
@@ -35,9 +47,15 @@ public interface ProductMapper {
             "lead_time = #{leadTime}, " +
             "part_list = #{partList} " +
             "WHERE product_id = #{productId}")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     int updateProduct(ProductDTO productDTO);
 
     // Delete product by ID
     @Delete("DELETE FROM Product WHERE product_id = #{id}")
+    @Results({
+            @Result(property = "partList", column = "part_list", typeHandler = JsonMapTypeHandler.class)
+    })
     int deleteProductById(@Param("id") Integer id);
 }

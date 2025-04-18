@@ -3,6 +3,8 @@ package com.lot.server.part.domain.model;
 import com.lot.server.part.domain.entity.PartStatus;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class PartDTO {
     private Integer partNumber;
@@ -11,5 +13,5 @@ public class PartDTO {
     private Integer borrowedEmployeeId;
     private PartStatus status;
     private Double cost;
-    private Integer productId;
+    private Map<String, Object> productId;
 }

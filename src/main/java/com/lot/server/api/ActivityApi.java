@@ -67,6 +67,7 @@ public class ActivityApi {
         partDTO.setProductId(productId);
         partDTO.setStatus(PartStatus.AVAILABLE);
         partDTO.setCost(cost);
+        partDTO.setProductName(productDTO.getProductName());
         partDTO.setPartName(partName);
 
         try {
