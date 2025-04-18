@@ -30,10 +30,10 @@ public interface ProductMapper {
     @Update("UPDATE Product SET " +
             "product_name = #{productName}, " +
             "number_part_in_stock = #{numberPartInStock}, " +
-            "total_cost = #{totalCost} " +
+            "total_cost = #{totalCost}, " +
             "number_part_check_out = #{numberPartCheckOut}, " +
             "lead_time = #{leadTime}, " +
-            "part_list = #{partList}, " +
+            "part_list = #{partList} " +
             "WHERE product_id = #{productId}")
     int updateProduct(ProductDTO productDTO);
 

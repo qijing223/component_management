@@ -2,6 +2,7 @@ package com.lot.server.api;
 
 import com.lot.server.common.bean.ResultTO;
 import com.lot.server.common.context.UserContext;
+import com.lot.server.part.domain.entity.PartStatus;
 import com.lot.server.part.domain.model.PartDTO;
 import com.lot.server.part.domain.model.ReturnedDTO;
 import com.lot.server.part.service.PartService;
@@ -52,7 +53,10 @@ public class PartApi {
     // Get components by status
     @GetMapping("/status/{status}")
     public ResponseEntity<List<PartDTO>> getComponentsByStatus(@PathVariable String status) {
+        System.out.println("Received status: " + status);
         List<PartDTO> components = partService.getPartsByStatus(status);
+        System.out.println(components);
+
         if (components.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

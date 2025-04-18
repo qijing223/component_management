@@ -1,6 +1,7 @@
 package com.lot.server.part.mapper;
 
 import com.lot.server.part.domain.entity.PartDO;
+import com.lot.server.part.domain.entity.PartStatus;
 import com.lot.server.part.domain.model.PartDTO;
 import com.lot.server.part.domain.model.ReturnedDTO;
 import org.apache.ibatis.annotations.*;
@@ -19,16 +20,17 @@ public interface PartMapper {
     @Select("SELECT part_number, part_id, part_name, borrowed_employee_id, status, cost, product_id FROM part WHERE part_id = #{id}")
     PartDTO getPartById(@Param("id") Integer id);
 
-    @Select("SELECT * FROM part WHERE status = #{status}")
+    @Select("SELECT * FROM part WHERE status = CAST(#{status} AS part_status)")
     List<PartDTO> selectByStatus(@Param("status") String status);
+
 
     @Update("UPDATE part SET " +
             "part_number = #{partNumber}, " +
             "part_id = #{partId}, " +
             "part_name = #{partName}, " +
-            "borrowed_employee_id = #{borrowedEmployeeId} " +
-            "status = #{status} " +
-            "cost = #{cost} " +
+            "borrowed_employee_id = #{borrowedEmployeeId}, " +
+            "status = #{status}, " +
+            "cost = #{cost}, " +
             "product_id = #{status} " +
             "WHERE part_id = #{partId}")
     int updatePart(PartDTO part);

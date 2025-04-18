@@ -9,7 +9,7 @@ public class PartDTO {
     private Integer partId;
     private String partName;
     private Integer borrowedEmployeeId;
-    private String status;
+    private PartStatus status;
     private Double cost;
     private Integer productId;
 }

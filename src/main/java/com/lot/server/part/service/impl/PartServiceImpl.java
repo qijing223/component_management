@@ -1,4 +1,5 @@
 package com.lot.server.part.service.impl;
+import com.lot.server.part.domain.entity.PartStatus;
 import com.lot.server.part.domain.model.PartDTO;
 import com.lot.server.part.domain.model.ReturnedDTO;
 import com.lot.server.part.mapper.PartMapper;
