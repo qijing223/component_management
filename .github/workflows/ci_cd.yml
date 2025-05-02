@@ -127,7 +127,7 @@ jobs:
             export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
             export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 
-            nohup java -jar /home/azureuser/app.jar --server.port=8081 \
+            nohup java -jar /home/azureuser/app.jar --server.port=8081 --server.address=0.0.0.0 \
               > /home/azureuser/app.log 2>&1 &
           EOF
 
