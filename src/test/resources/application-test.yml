@@ -1,6 +1,3 @@
-server:
-  port: 8081
-  address: 0.0.0.0
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://40.76.142.12:5432/slb_db}
