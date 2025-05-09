@@ -132,7 +132,7 @@ jobs:
           EOF
 
 
-#      - name: Build and run tests1
+#      - name: Build and run tests
 #        run: mvn clean verify
 #
 #      - name: Deploy to production
