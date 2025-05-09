@@ -53,7 +53,7 @@ public interface PartMapper {
     @Update("UPDATE part SET borrowed_employee_id = #{userId} WHERE part_id = #{partId}")
     void updateBorrowedByPartId(@Param("userId") Integer userId, @Param("partId") Integer partId);
 
-    @Update("UPDATE part SET borrowed_employee_id = 999 WHERE part_id = #{partId}")
+    @Update("UPDATE part SET borrowed_employee_id = null WHERE part_id = #{partId}")
     void deleteBorrowedByPartId(@Param("partId") Integer partId);
 
     @Insert("INSERT INTO returned_part (part_id, part_name, return_time, borrow_employee_id) VALUES (#{partId}, #{partName}, #{returnTime}, #{borrowEmployeeId})")

@@ -189,7 +189,7 @@ public class ActivityApi {
 
         // Update part status to "Available"
         partDTO.setStatus(PartStatus.AVAILABLE);
-        partDTO.setBorrowedEmployeeId(999); // Clear the borrowed employee ID
+        //partDTO.setBorrowedEmployeeId(null); // Clear the borrowed employee ID
         partService.updatePart(partId, partDTO);
         partService.createReturnedByPartId(employeeId, partId);
 
